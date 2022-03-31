@@ -1,0 +1,9 @@
+{
+  "fbsApp": {
+    "BookStatus": {
+      "null": "",
+      "AVAILABLE": "AVAILABLE",
+      "TAKEN": "TAKEN"
+    }
+  }
+}

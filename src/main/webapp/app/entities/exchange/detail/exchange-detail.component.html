@@ -1,0 +1,62 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="exchange">
+      <h2 data-cy="exchangeDetailsHeading"><span jhiTranslate="fbsApp.exchange.detail.title">Exchange</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ exchange.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="fbsApp.exchange.createdBy">Created By</span></dt>
+        <dd>
+          <span>{{ exchange.createdBy }}</span>
+        </dd>
+        <dt><span jhiTranslate="fbsApp.exchange.createdDate">Created Date</span></dt>
+        <dd>
+          <span>{{ exchange.createdDate | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span jhiTranslate="fbsApp.exchange.lastModifiedBy">Last Modified By</span></dt>
+        <dd>
+          <span>{{ exchange.lastModifiedBy }}</span>
+        </dd>
+        <dt><span jhiTranslate="fbsApp.exchange.lastModifiedDate">Last Modified Date</span></dt>
+        <dd>
+          <span>{{ exchange.lastModifiedDate | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span jhiTranslate="fbsApp.exchange.formProfile">Form Profile</span></dt>
+        <dd>
+          <div *ngIf="exchange.formProfile">
+            <a [routerLink]="['/profile', exchange.formProfile?.id, 'view']">{{ exchange.formProfile?.id }}</a>
+          </div>
+        </dd>
+        <dt><span jhiTranslate="fbsApp.exchange.toProfile">To Profile</span></dt>
+        <dd>
+          <div *ngIf="exchange.toProfile">
+            <a [routerLink]="['/profile', exchange.toProfile?.id, 'view']">{{ exchange.toProfile?.id }}</a>
+          </div>
+        </dd>
+        <dt><span jhiTranslate="fbsApp.exchange.book">Book</span></dt>
+        <dd>
+          <div *ngIf="exchange.book">
+            <a [routerLink]="['/book', exchange.book?.id, 'view']">{{ exchange.book?.id }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/exchange', exchange.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

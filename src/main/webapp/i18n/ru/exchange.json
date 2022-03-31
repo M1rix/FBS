@@ -1,0 +1,30 @@
+{
+  "fbsApp": {
+    "exchange": {
+      "home": {
+        "title": "Exchanges",
+        "refreshListLabel": "Обновить список",
+        "createLabel": "Создать новый Exchange",
+        "createOrEditLabel": "Создать или отредактировать Exchange",
+        "notFound": "Exchanges не найдено"
+      },
+      "created": "Новый Exchange создан с идентификатором {{ param }}",
+      "updated": "Exchange обновлен с идентификатором {{ param }}",
+      "deleted": "Exchange удален с идентификатором {{ param }}",
+      "delete": {
+        "question": "Вы уверены что хотите удалить Exchange {{ id }}?"
+      },
+      "detail": {
+        "title": "Exchange"
+      },
+      "id": "ID",
+      "createdBy": "Created By",
+      "createdDate": "Created Date",
+      "lastModifiedBy": "Last Modified By",
+      "lastModifiedDate": "Last Modified Date",
+      "formProfile": "Form Profile",
+      "toProfile": "To Profile",
+      "book": "Book"
+    }
+  }
+}

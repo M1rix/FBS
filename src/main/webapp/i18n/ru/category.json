@@ -1,0 +1,29 @@
+{
+  "fbsApp": {
+    "category": {
+      "home": {
+        "title": "Categories",
+        "refreshListLabel": "Обновить список",
+        "createLabel": "Создать новый Category",
+        "createOrEditLabel": "Создать или отредактировать Category",
+        "notFound": "Categories не найдено"
+      },
+      "created": "Новый Category создан с идентификатором {{ param }}",
+      "updated": "Category обновлен с идентификатором {{ param }}",
+      "deleted": "Category удален с идентификатором {{ param }}",
+      "delete": {
+        "question": "Вы уверены что хотите удалить Category {{ id }}?"
+      },
+      "detail": {
+        "title": "Category"
+      },
+      "id": "ID",
+      "name": "Name",
+      "createdBy": "Created By",
+      "createdDate": "Created Date",
+      "lastModifiedBy": "Last Modified By",
+      "lastModifiedDate": "Last Modified Date",
+      "book": "Book"
+    }
+  }
+}

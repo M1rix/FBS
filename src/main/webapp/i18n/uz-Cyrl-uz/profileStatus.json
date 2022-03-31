@@ -1,0 +1,10 @@
+{
+  "fbsApp": {
+    "ProfileStatus": {
+      "null": "",
+      "ACTIVE": "ACTIVE",
+      "INACTIVE": "INACTIVE",
+      "BLOCKED": "BLOCKED"
+    }
+  }
+}

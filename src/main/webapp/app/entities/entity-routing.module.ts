@@ -4,6 +4,31 @@ import { RouterModule } from '@angular/router';
 @NgModule({
   imports: [
     RouterModule.forChild([
+      {
+        path: 'profile',
+        data: { pageTitle: 'fbsApp.profile.home.title' },
+        loadChildren: () => import('./profile/profile.module').then(m => m.ProfileModule),
+      },
+      {
+        path: 'book',
+        data: { pageTitle: 'fbsApp.book.home.title' },
+        loadChildren: () => import('./book/book.module').then(m => m.BookModule),
+      },
+      {
+        path: 'exchange',
+        data: { pageTitle: 'fbsApp.exchange.home.title' },
+        loadChildren: () => import('./exchange/exchange.module').then(m => m.ExchangeModule),
+      },
+      {
+        path: 'category',
+        data: { pageTitle: 'fbsApp.category.home.title' },
+        loadChildren: () => import('./category/category.module').then(m => m.CategoryModule),
+      },
+      {
+        path: 'author',
+        data: { pageTitle: 'fbsApp.author.home.title' },
+        loadChildren: () => import('./author/author.module').then(m => m.AuthorModule),
+      },
       /* jhipster-needle-add-entity-route - JHipster will add entity modules routes here */
     ]),
   ],
