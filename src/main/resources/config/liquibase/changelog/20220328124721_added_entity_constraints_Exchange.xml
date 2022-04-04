@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
+    <!--
+        Added the constraints for entity Exchange.
+    -->
+    <changeSet id="20220328124721-2" author="jhipster">
+
+        <addForeignKeyConstraint baseColumnNames="form_profile_id"
+                                 baseTableName="apex_exchange"
+                                 constraintName="fk_apex_exchange__form_profile_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="apex_profile"/>
+
+        <addForeignKeyConstraint baseColumnNames="to_profile_id"
+                                 baseTableName="apex_exchange"
+                                 constraintName="fk_apex_exchange__to_profile_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="apex_profile"/>
+
+        <addForeignKeyConstraint baseColumnNames="book_id"
+                                 baseTableName="apex_exchange"
+                                 constraintName="fk_apex_exchange__book_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="apex_book"/>
+    </changeSet>
+</databaseChangeLog>

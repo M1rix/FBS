@@ -1,0 +1,58 @@
+{
+  "applications": "*",
+  "changelogDate": "20220328124721",
+  "dto": "mapstruct",
+  "embedded": false,
+  "entityTableName": "apex_exchange",
+  "fields": [
+    {
+      "fieldName": "createdBy",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "maxlength"],
+      "fieldValidateRulesMaxlength": "50"
+    },
+    {
+      "fieldName": "createdDate",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "lastModifiedBy",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength"],
+      "fieldValidateRulesMaxlength": "50"
+    },
+    {
+      "fieldName": "lastModifiedDate",
+      "fieldType": "Instant"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": true,
+  "name": "Exchange",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "profile",
+      "otherEntityRelationshipName": "exchange",
+      "ownerSide": true,
+      "relationshipName": "formProfile",
+      "relationshipType": "one-to-one"
+    },
+    {
+      "otherEntityName": "profile",
+      "otherEntityRelationshipName": "exchange",
+      "ownerSide": true,
+      "relationshipName": "toProfile",
+      "relationshipType": "one-to-one"
+    },
+    {
+      "otherEntityName": "book",
+      "otherEntityRelationshipName": "exchange",
+      "ownerSide": true,
+      "relationshipName": "book",
+      "relationshipType": "one-to-one"
+    }
+  ],
+  "service": "serviceClass"
+}

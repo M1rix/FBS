@@ -1,0 +1,62 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="author">
+      <h2 data-cy="authorDetailsHeading"><span jhiTranslate="fbsApp.author.detail.title">Author</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ author.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="fbsApp.author.name">Name</span></dt>
+        <dd>
+          <span>{{ author.name }}</span>
+        </dd>
+        <dt><span jhiTranslate="fbsApp.author.lastName">Last Name</span></dt>
+        <dd>
+          <span>{{ author.lastName }}</span>
+        </dd>
+        <dt><span jhiTranslate="fbsApp.author.imageUrl">Image Url</span></dt>
+        <dd>
+          <span>{{ author.imageUrl }}</span>
+        </dd>
+        <dt><span jhiTranslate="fbsApp.author.createdBy">Created By</span></dt>
+        <dd>
+          <span>{{ author.createdBy }}</span>
+        </dd>
+        <dt><span jhiTranslate="fbsApp.author.createdDate">Created Date</span></dt>
+        <dd>
+          <span>{{ author.createdDate | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span jhiTranslate="fbsApp.author.lastModifiedBy">Last Modified By</span></dt>
+        <dd>
+          <span>{{ author.lastModifiedBy }}</span>
+        </dd>
+        <dt><span jhiTranslate="fbsApp.author.lastModifiedDate">Last Modified Date</span></dt>
+        <dd>
+          <span>{{ author.lastModifiedDate | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span jhiTranslate="fbsApp.author.book">Book</span></dt>
+        <dd>
+          <div *ngIf="author.book">
+            <a [routerLink]="['/book', author.book?.id, 'view']">{{ author.book?.id }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/author', author.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

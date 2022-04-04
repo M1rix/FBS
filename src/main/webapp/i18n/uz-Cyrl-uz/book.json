@@ -1,0 +1,35 @@
+{
+  "fbsApp": {
+    "book": {
+      "home": {
+        "title": "Books",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Янги Book қўшиш",
+        "createOrEditLabel": "Bookни таҳрирлаш",
+        "notFound": "No Books found"
+      },
+      "created": "Book {{ param }} билан қўшилди.",
+      "updated": "{{ param }}- Book сақланди.",
+      "deleted": "{{ param }}- Book ўчирилди.",
+      "delete": {
+        "question": "{{ id }}- Bookни ўчирмоқчимисиз? "
+      },
+      "detail": {
+        "title": "Book"
+      },
+      "id": "ID",
+      "name": "Name",
+      "imageUrl": "Image Url",
+      "pages": "Pages",
+      "status": "Status",
+      "likes": "Likes",
+      "createdBy": "Created By",
+      "createdDate": "Created Date",
+      "lastModifiedBy": "Last Modified By",
+      "lastModifiedDate": "Last Modified Date",
+      "category": "Category",
+      "exchange": "Exchange",
+      "author": "Author"
+    }
+  }
+}

@@ -1,0 +1,95 @@
+DEFAULT_MIN_LENGTH = 1
+DEFAULT_MAX_LENGTH = 255
+NAME_MAX_LENGTH = 50
+
+entity Profile(apex_profile){
+	phone String required minlength(12) maxlength(12) unique
+    accessToken String required minlength(32) maxlength(DEFAULT_MAX_LENGTH) unique
+    firstName String maxlength(NAME_MAX_LENGTH)
+    lastName String maxlength(NAME_MAX_LENGTH)
+    imageUrl String required maxlength(DEFAULT_MAX_LENGTH)
+    langKey String required minlength(2) maxlength(6)
+    gender Gender
+    score Double min(0) max(5)
+    likes Long min(0)
+    status ProfileStatus required
+
+    createdBy String required maxlength(NAME_MAX_LENGTH)
+    createdDate Instant
+    lastModifiedBy String maxlength(NAME_MAX_LENGTH)
+    lastModifiedDate Instant
+}
+
+entity Book(apex_book){
+ 	name String maxlength(DEFAULT_MAX_LENGTH)
+ 	imageUrl String required maxlength(DEFAULT_MAX_LENGTH)
+    pages Integer min(0)
+    status BookStatus required
+    likes Long min(0)
+
+    createdBy String maxlength(NAME_MAX_LENGTH) required
+	createdDate Instant required
+	lastModifiedBy String maxlength(NAME_MAX_LENGTH)
+	lastModifiedDate Instant
+}
+
+entity Exchange(apex_exchange){
+	createdBy String required maxlength(NAME_MAX_LENGTH)
+    createdDate Instant
+    lastModifiedBy String maxlength(NAME_MAX_LENGTH)
+    lastModifiedDate Instant
+}
+
+entity Category(apex_category) {
+	name String required maxlength(NAME_MAX_LENGTH)
+
+	createdBy String required maxlength(NAME_MAX_LENGTH)
+    createdDate Instant
+    lastModifiedBy String maxlength(NAME_MAX_LENGTH)
+    lastModifiedDate Instant
+}
+
+entity Author(apex_author){
+	name String maxlength(NAME_MAX_LENGTH)
+    lastName String maxlength(NAME_MAX_LENGTH)
+    imageUrl String maxlength(DEFAULT_MAX_LENGTH)
+
+    createdBy String required maxlength(NAME_MAX_LENGTH)
+    createdDate Instant
+    lastModifiedBy String maxlength(NAME_MAX_LENGTH)
+    lastModifiedDate Instant
+}
+enum ProfileStatus{
+	ACTIVE
+    INACTIVE
+    BLOCKED
+}
+
+enum Gender {
+	MALE
+    FEMALE
+}
+
+enum BookStatus{
+	AVAILABLE
+    TAKEN
+}
+
+relationship ManyToOne{
+	Author to Book
+    Book to Category
+}
+
+relationship OneToOne{
+	Exchange{formProfile} to Profile
+    Exchange{toProfile} to Profile
+	Exchange to Book
+}
+
+dto * with mapstruct
+
+service * with serviceClass
+
+paginate * with pagination
+
+filter *

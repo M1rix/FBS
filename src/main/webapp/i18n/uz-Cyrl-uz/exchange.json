@@ -1,0 +1,30 @@
+{
+  "fbsApp": {
+    "exchange": {
+      "home": {
+        "title": "Exchanges",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Янги Exchange қўшиш",
+        "createOrEditLabel": "Exchangeни таҳрирлаш",
+        "notFound": "No Exchanges found"
+      },
+      "created": "Exchange {{ param }} билан қўшилди.",
+      "updated": "{{ param }}- Exchange сақланди.",
+      "deleted": "{{ param }}- Exchange ўчирилди.",
+      "delete": {
+        "question": "{{ id }}- Exchangeни ўчирмоқчимисиз? "
+      },
+      "detail": {
+        "title": "Exchange"
+      },
+      "id": "ID",
+      "createdBy": "Created By",
+      "createdDate": "Created Date",
+      "lastModifiedBy": "Last Modified By",
+      "lastModifiedDate": "Last Modified Date",
+      "formProfile": "Form Profile",
+      "toProfile": "To Profile",
+      "book": "Book"
+    }
+  }
+}

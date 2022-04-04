@@ -1,0 +1,35 @@
+{
+  "fbsApp": {
+    "book": {
+      "home": {
+        "title": "Books",
+        "refreshListLabel": "Обновить список",
+        "createLabel": "Создать новый Book",
+        "createOrEditLabel": "Создать или отредактировать Book",
+        "notFound": "Books не найдено"
+      },
+      "created": "Новый Book создан с идентификатором {{ param }}",
+      "updated": "Book обновлен с идентификатором {{ param }}",
+      "deleted": "Book удален с идентификатором {{ param }}",
+      "delete": {
+        "question": "Вы уверены что хотите удалить Book {{ id }}?"
+      },
+      "detail": {
+        "title": "Book"
+      },
+      "id": "ID",
+      "name": "Name",
+      "imageUrl": "Image Url",
+      "pages": "Pages",
+      "status": "Status",
+      "likes": "Likes",
+      "createdBy": "Created By",
+      "createdDate": "Created Date",
+      "lastModifiedBy": "Last Modified By",
+      "lastModifiedDate": "Last Modified Date",
+      "category": "Category",
+      "exchange": "Exchange",
+      "author": "Author"
+    }
+  }
+}

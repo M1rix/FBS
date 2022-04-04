@@ -1,0 +1,31 @@
+{
+  "fbsApp": {
+    "author": {
+      "home": {
+        "title": "Authors",
+        "refreshListLabel": "Обновить список",
+        "createLabel": "Создать новый Author",
+        "createOrEditLabel": "Создать или отредактировать Author",
+        "notFound": "Authors не найдено"
+      },
+      "created": "Новый Author создан с идентификатором {{ param }}",
+      "updated": "Author обновлен с идентификатором {{ param }}",
+      "deleted": "Author удален с идентификатором {{ param }}",
+      "delete": {
+        "question": "Вы уверены что хотите удалить Author {{ id }}?"
+      },
+      "detail": {
+        "title": "Author"
+      },
+      "id": "ID",
+      "name": "Name",
+      "lastName": "Last Name",
+      "imageUrl": "Image Url",
+      "createdBy": "Created By",
+      "createdDate": "Created Date",
+      "lastModifiedBy": "Last Modified By",
+      "lastModifiedDate": "Last Modified Date",
+      "book": "Book"
+    }
+  }
+}

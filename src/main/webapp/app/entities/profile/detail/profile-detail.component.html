@@ -1,0 +1,84 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="profile">
+      <h2 data-cy="profileDetailsHeading"><span jhiTranslate="fbsApp.profile.detail.title">Profile</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ profile.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="fbsApp.profile.phone">Phone</span></dt>
+        <dd>
+          <span>{{ profile.phone }}</span>
+        </dd>
+        <dt><span jhiTranslate="fbsApp.profile.accessToken">Access Token</span></dt>
+        <dd>
+          <span>{{ profile.accessToken }}</span>
+        </dd>
+        <dt><span jhiTranslate="fbsApp.profile.firstName">First Name</span></dt>
+        <dd>
+          <span>{{ profile.firstName }}</span>
+        </dd>
+        <dt><span jhiTranslate="fbsApp.profile.lastName">Last Name</span></dt>
+        <dd>
+          <span>{{ profile.lastName }}</span>
+        </dd>
+        <dt><span jhiTranslate="fbsApp.profile.imageUrl">Image Url</span></dt>
+        <dd>
+          <span>{{ profile.imageUrl }}</span>
+        </dd>
+        <dt><span jhiTranslate="fbsApp.profile.langKey">Lang Key</span></dt>
+        <dd>
+          <span>{{ profile.langKey }}</span>
+        </dd>
+        <dt><span jhiTranslate="fbsApp.profile.gender">Gender</span></dt>
+        <dd>
+          <span jhiTranslate="{{ 'fbsApp.Gender.' + profile.gender }}">{{ profile.gender }}</span>
+        </dd>
+        <dt><span jhiTranslate="fbsApp.profile.score">Score</span></dt>
+        <dd>
+          <span>{{ profile.score }}</span>
+        </dd>
+        <dt><span jhiTranslate="fbsApp.profile.likes">Likes</span></dt>
+        <dd>
+          <span>{{ profile.likes }}</span>
+        </dd>
+        <dt><span jhiTranslate="fbsApp.profile.status">Status</span></dt>
+        <dd>
+          <span jhiTranslate="{{ 'fbsApp.ProfileStatus.' + profile.status }}">{{ profile.status }}</span>
+        </dd>
+        <dt><span jhiTranslate="fbsApp.profile.createdBy">Created By</span></dt>
+        <dd>
+          <span>{{ profile.createdBy }}</span>
+        </dd>
+        <dt><span jhiTranslate="fbsApp.profile.createdDate">Created Date</span></dt>
+        <dd>
+          <span>{{ profile.createdDate | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span jhiTranslate="fbsApp.profile.lastModifiedBy">Last Modified By</span></dt>
+        <dd>
+          <span>{{ profile.lastModifiedBy }}</span>
+        </dd>
+        <dt><span jhiTranslate="fbsApp.profile.lastModifiedDate">Last Modified Date</span></dt>
+        <dd>
+          <span>{{ profile.lastModifiedDate | formatMediumDatetime }}</span>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/profile', profile.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+      </button>
+    </div>
+  </div>
+</div>
