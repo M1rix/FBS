@@ -34,9 +34,6 @@
         <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="loadPage()">
           <th scope="col" jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
           <th scope="col" jhiSortBy="name"><span jhiTranslate="fbsApp.book.name">Name</span> <fa-icon icon="sort"></fa-icon></th>
-          <th scope="col" jhiSortBy="imageUrl">
-            <span jhiTranslate="fbsApp.book.imageUrl">Image Url</span> <fa-icon icon="sort"></fa-icon>
-          </th>
           <th scope="col" jhiSortBy="pages"><span jhiTranslate="fbsApp.book.pages">Pages</span> <fa-icon icon="sort"></fa-icon></th>
           <th scope="col" jhiSortBy="status"><span jhiTranslate="fbsApp.book.status">Status</span> <fa-icon icon="sort"></fa-icon></th>
           <th scope="col" jhiSortBy="likes"><span jhiTranslate="fbsApp.book.likes">Likes</span> <fa-icon icon="sort"></fa-icon></th>
@@ -52,6 +49,7 @@
           <th scope="col" jhiSortBy="lastModifiedDate">
             <span jhiTranslate="fbsApp.book.lastModifiedDate">Last Modified Date</span> <fa-icon icon="sort"></fa-icon>
           </th>
+          <th scope="col" jhiSortBy="image.url"><span jhiTranslate="fbsApp.book.image">Image</span> <fa-icon icon="sort"></fa-icon></th>
           <th scope="col" jhiSortBy="category.id">
             <span jhiTranslate="fbsApp.book.category">Category</span> <fa-icon icon="sort"></fa-icon>
           </th>
@@ -64,7 +62,6 @@
             <a [routerLink]="['/book', book.id, 'view']">{{ book.id }}</a>
           </td>
           <td>{{ book.name }}</td>
-          <td>{{ book.imageUrl }}</td>
           <td>{{ book.pages }}</td>
           <td jhiTranslate="{{ 'fbsApp.BookStatus.' + book.status }}">{{ book.status }}</td>
           <td>{{ book.likes }}</td>
@@ -72,6 +69,11 @@
           <td>{{ book.createdDate | formatMediumDatetime }}</td>
           <td>{{ book.lastModifiedBy }}</td>
           <td>{{ book.lastModifiedDate | formatMediumDatetime }}</td>
+          <td>
+            <div *ngIf="book.image">
+              <a [routerLink]="['/image', book.image?.id, 'view']">{{ book.image?.url }}</a>
+            </div>
+          </td>
           <td>
             <div *ngIf="book.category">
               <a [routerLink]="['/category', book.category?.id, 'view']">{{ book.category?.id }}</a>

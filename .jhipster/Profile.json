@@ -32,12 +32,6 @@
       "fieldValidateRulesMaxlength": "50"
     },
     {
-      "fieldName": "imageUrl",
-      "fieldType": "String",
-      "fieldValidateRules": ["required", "maxlength"],
-      "fieldValidateRulesMaxlength": "255"
-    },
-    {
       "fieldName": "langKey",
       "fieldType": "String",
       "fieldValidateRules": ["required", "minlength", "maxlength"],
@@ -94,6 +88,15 @@
   "name": "Profile",
   "pagination": "pagination",
   "readOnly": false,
-  "relationships": [],
+  "relationships": [
+    {
+      "otherEntityField": "url",
+      "otherEntityName": "image",
+      "otherEntityRelationshipName": "profile",
+      "ownerSide": true,
+      "relationshipName": "image",
+      "relationshipType": "one-to-one"
+    }
+  ],
   "service": "serviceClass"
 }

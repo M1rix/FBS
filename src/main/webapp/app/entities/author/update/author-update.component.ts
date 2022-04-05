@@ -10,6 +10,8 @@ import { DATE_TIME_FORMAT } from 'app/config/input.constants';
 
 import { IAuthor, Author } from '../author.model';
 import { AuthorService } from '../service/author.service';
+import { IImage } from 'app/entities/image/image.model';
+import { ImageService } from 'app/entities/image/service/image.service';
 import { IBook } from 'app/entities/book/book.model';
 import { BookService } from 'app/entities/book/service/book.service';
 
@@ -20,22 +22,24 @@ import { BookService } from 'app/entities/book/service/book.service';
 export class AuthorUpdateComponent implements OnInit {
   isSaving = false;
 
+  imagesCollection: IImage[] = [];
   booksSharedCollection: IBook[] = [];
 
   editForm = this.fb.group({
     id: [],
     name: [null, [Validators.maxLength(50)]],
     lastName: [null, [Validators.maxLength(50)]],
-    imageUrl: [null, [Validators.maxLength(255)]],
     createdBy: [null, [Validators.required, Validators.maxLength(50)]],
     createdDate: [],
     lastModifiedBy: [null, [Validators.maxLength(50)]],
     lastModifiedDate: [],
+    image: [],
     book: [],
   });
 
   constructor(
     protected authorService: AuthorService,
+    protected imageService: ImageService,
     protected bookService: BookService,
     protected activatedRoute: ActivatedRoute,
     protected fb: FormBuilder
@@ -69,6 +73,10 @@ export class AuthorUpdateComponent implements OnInit {
     }
   }
 
+  trackImageById(index: number, item: IImage): number {
+    return item.id!;
+  }
+
   trackBookById(index: number, item: IBook): number {
     return item.id!;
   }
@@ -97,18 +105,25 @@ export class AuthorUpdateComponent implements OnInit {
       id: author.id,
       name: author.name,
       lastName: author.lastName,
-      imageUrl: author.imageUrl,
       createdBy: author.createdBy,
       createdDate: author.createdDate ? author.createdDate.format(DATE_TIME_FORMAT) : null,
       lastModifiedBy: author.lastModifiedBy,
       lastModifiedDate: author.lastModifiedDate ? author.lastModifiedDate.format(DATE_TIME_FORMAT) : null,
+      image: author.image,
       book: author.book,
     });
 
+    this.imagesCollection = this.imageService.addImageToCollectionIfMissing(this.imagesCollection, author.image);
     this.booksSharedCollection = this.bookService.addBookToCollectionIfMissing(this.booksSharedCollection, author.book);
   }
 
   protected loadRelationshipsOptions(): void {
+    this.imageService
+      .query({ 'authorId.specified': 'false' })
+      .pipe(map((res: HttpResponse<IImage[]>) => res.body ?? []))
+      .pipe(map((images: IImage[]) => this.imageService.addImageToCollectionIfMissing(images, this.editForm.get('image')!.value)))
+      .subscribe((images: IImage[]) => (this.imagesCollection = images));
+
     this.bookService
       .query()
       .pipe(map((res: HttpResponse<IBook[]>) => res.body ?? []))
@@ -122,7 +137,6 @@ export class AuthorUpdateComponent implements OnInit {
       id: this.editForm.get(['id'])!.value,
       name: this.editForm.get(['name'])!.value,
       lastName: this.editForm.get(['lastName'])!.value,
-      imageUrl: this.editForm.get(['imageUrl'])!.value,
       createdBy: this.editForm.get(['createdBy'])!.value,
       createdDate: this.editForm.get(['createdDate'])!.value
         ? dayjs(this.editForm.get(['createdDate'])!.value, DATE_TIME_FORMAT)
@@ -131,6 +145,7 @@ export class AuthorUpdateComponent implements OnInit {
       lastModifiedDate: this.editForm.get(['lastModifiedDate'])!.value
         ? dayjs(this.editForm.get(['lastModifiedDate'])!.value, DATE_TIME_FORMAT)
         : undefined,
+      image: this.editForm.get(['image'])!.value,
       book: this.editForm.get(['book'])!.value,
     };
   }

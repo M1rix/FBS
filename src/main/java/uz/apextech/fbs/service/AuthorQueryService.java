@@ -96,9 +96,6 @@ public class AuthorQueryService extends QueryService<Author> {
             if (criteria.getLastName() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getLastName(), Author_.lastName));
             }
-            if (criteria.getImageUrl() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getImageUrl(), Author_.imageUrl));
-            }
             if (criteria.getCreatedBy() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getCreatedBy(), Author_.createdBy));
             }
@@ -110,6 +107,12 @@ public class AuthorQueryService extends QueryService<Author> {
             }
             if (criteria.getLastModifiedDate() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getLastModifiedDate(), Author_.lastModifiedDate));
+            }
+            if (criteria.getImageId() != null) {
+                specification =
+                    specification.and(
+                        buildSpecification(criteria.getImageId(), root -> root.join(Author_.image, JoinType.LEFT).get(Image_.id))
+                    );
             }
             if (criteria.getBookId() != null) {
                 specification =

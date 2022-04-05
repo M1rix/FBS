@@ -3,13 +3,15 @@ import { HttpResponse } from '@angular/common/http';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { finalize } from 'rxjs/operators';
+import { finalize, map } from 'rxjs/operators';
 
 import dayjs from 'dayjs/esm';
 import { DATE_TIME_FORMAT } from 'app/config/input.constants';
 
 import { IProfile, Profile } from '../profile.model';
 import { ProfileService } from '../service/profile.service';
+import { IImage } from 'app/entities/image/image.model';
+import { ImageService } from 'app/entities/image/service/image.service';
 import { Gender } from 'app/entities/enumerations/gender.model';
 import { ProfileStatus } from 'app/entities/enumerations/profile-status.model';
 
@@ -22,13 +24,14 @@ export class ProfileUpdateComponent implements OnInit {
   genderValues = Object.keys(Gender);
   profileStatusValues = Object.keys(ProfileStatus);
 
+  imagesCollection: IImage[] = [];
+
   editForm = this.fb.group({
     id: [],
     phone: [null, [Validators.required, Validators.minLength(12), Validators.maxLength(12)]],
     accessToken: [null, [Validators.required, Validators.minLength(32), Validators.maxLength(255)]],
     firstName: [null, [Validators.maxLength(50)]],
     lastName: [null, [Validators.maxLength(50)]],
-    imageUrl: [null, [Validators.required, Validators.maxLength(255)]],
     langKey: [null, [Validators.required, Validators.minLength(2), Validators.maxLength(6)]],
     gender: [],
     score: [null, [Validators.min(0), Validators.max(5)]],
@@ -38,9 +41,15 @@ export class ProfileUpdateComponent implements OnInit {
     createdDate: [],
     lastModifiedBy: [null, [Validators.maxLength(50)]],
     lastModifiedDate: [],
+    image: [],
   });
 
-  constructor(protected profileService: ProfileService, protected activatedRoute: ActivatedRoute, protected fb: FormBuilder) {}
+  constructor(
+    protected profileService: ProfileService,
+    protected imageService: ImageService,
+    protected activatedRoute: ActivatedRoute,
+    protected fb: FormBuilder
+  ) {}
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ profile }) => {
@@ -51,6 +60,8 @@ export class ProfileUpdateComponent implements OnInit {
       }
 
       this.updateForm(profile);
+
+      this.loadRelationshipsOptions();
     });
   }
 
@@ -66,6 +77,10 @@ export class ProfileUpdateComponent implements OnInit {
     } else {
       this.subscribeToSaveResponse(this.profileService.create(profile));
     }
+  }
+
+  trackImageById(index: number, item: IImage): number {
+    return item.id!;
   }
 
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IProfile>>): void {
@@ -94,7 +109,6 @@ export class ProfileUpdateComponent implements OnInit {
       accessToken: profile.accessToken,
       firstName: profile.firstName,
       lastName: profile.lastName,
-      imageUrl: profile.imageUrl,
       langKey: profile.langKey,
       gender: profile.gender,
       score: profile.score,
@@ -104,7 +118,18 @@ export class ProfileUpdateComponent implements OnInit {
       createdDate: profile.createdDate ? profile.createdDate.format(DATE_TIME_FORMAT) : null,
       lastModifiedBy: profile.lastModifiedBy,
       lastModifiedDate: profile.lastModifiedDate ? profile.lastModifiedDate.format(DATE_TIME_FORMAT) : null,
+      image: profile.image,
     });
+
+    this.imagesCollection = this.imageService.addImageToCollectionIfMissing(this.imagesCollection, profile.image);
+  }
+
+  protected loadRelationshipsOptions(): void {
+    this.imageService
+      .query({ 'profileId.specified': 'false' })
+      .pipe(map((res: HttpResponse<IImage[]>) => res.body ?? []))
+      .pipe(map((images: IImage[]) => this.imageService.addImageToCollectionIfMissing(images, this.editForm.get('image')!.value)))
+      .subscribe((images: IImage[]) => (this.imagesCollection = images));
   }
 
   protected createFromForm(): IProfile {
@@ -115,7 +140,6 @@ export class ProfileUpdateComponent implements OnInit {
       accessToken: this.editForm.get(['accessToken'])!.value,
       firstName: this.editForm.get(['firstName'])!.value,
       lastName: this.editForm.get(['lastName'])!.value,
-      imageUrl: this.editForm.get(['imageUrl'])!.value,
       langKey: this.editForm.get(['langKey'])!.value,
       gender: this.editForm.get(['gender'])!.value,
       score: this.editForm.get(['score'])!.value,
@@ -129,6 +153,7 @@ export class ProfileUpdateComponent implements OnInit {
       lastModifiedDate: this.editForm.get(['lastModifiedDate'])!.value
         ? dayjs(this.editForm.get(['lastModifiedDate'])!.value, DATE_TIME_FORMAT)
         : undefined,
+      image: this.editForm.get(['image'])!.value,
     };
   }
 }

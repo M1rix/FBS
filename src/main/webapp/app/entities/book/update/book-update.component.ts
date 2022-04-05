@@ -10,6 +10,8 @@ import { DATE_TIME_FORMAT } from 'app/config/input.constants';
 
 import { IBook, Book } from '../book.model';
 import { BookService } from '../service/book.service';
+import { IImage } from 'app/entities/image/image.model';
+import { ImageService } from 'app/entities/image/service/image.service';
 import { ICategory } from 'app/entities/category/category.model';
 import { CategoryService } from 'app/entities/category/service/category.service';
 import { BookStatus } from 'app/entities/enumerations/book-status.model';
@@ -22,12 +24,12 @@ export class BookUpdateComponent implements OnInit {
   isSaving = false;
   bookStatusValues = Object.keys(BookStatus);
 
+  imagesCollection: IImage[] = [];
   categoriesSharedCollection: ICategory[] = [];
 
   editForm = this.fb.group({
     id: [],
     name: [null, [Validators.maxLength(255)]],
-    imageUrl: [null, [Validators.required, Validators.maxLength(255)]],
     pages: [null, [Validators.min(0)]],
     status: [null, [Validators.required]],
     likes: [null, [Validators.min(0)]],
@@ -35,11 +37,13 @@ export class BookUpdateComponent implements OnInit {
     createdDate: [null, [Validators.required]],
     lastModifiedBy: [null, [Validators.maxLength(50)]],
     lastModifiedDate: [],
+    image: [],
     category: [],
   });
 
   constructor(
     protected bookService: BookService,
+    protected imageService: ImageService,
     protected categoryService: CategoryService,
     protected activatedRoute: ActivatedRoute,
     protected fb: FormBuilder
@@ -73,6 +77,10 @@ export class BookUpdateComponent implements OnInit {
     }
   }
 
+  trackImageById(index: number, item: IImage): number {
+    return item.id!;
+  }
+
   trackCategoryById(index: number, item: ICategory): number {
     return item.id!;
   }
@@ -100,7 +108,6 @@ export class BookUpdateComponent implements OnInit {
     this.editForm.patchValue({
       id: book.id,
       name: book.name,
-      imageUrl: book.imageUrl,
       pages: book.pages,
       status: book.status,
       likes: book.likes,
@@ -108,13 +115,21 @@ export class BookUpdateComponent implements OnInit {
       createdDate: book.createdDate ? book.createdDate.format(DATE_TIME_FORMAT) : null,
       lastModifiedBy: book.lastModifiedBy,
       lastModifiedDate: book.lastModifiedDate ? book.lastModifiedDate.format(DATE_TIME_FORMAT) : null,
+      image: book.image,
       category: book.category,
     });
 
+    this.imagesCollection = this.imageService.addImageToCollectionIfMissing(this.imagesCollection, book.image);
     this.categoriesSharedCollection = this.categoryService.addCategoryToCollectionIfMissing(this.categoriesSharedCollection, book.category);
   }
 
   protected loadRelationshipsOptions(): void {
+    this.imageService
+      .query({ 'bookId.specified': 'false' })
+      .pipe(map((res: HttpResponse<IImage[]>) => res.body ?? []))
+      .pipe(map((images: IImage[]) => this.imageService.addImageToCollectionIfMissing(images, this.editForm.get('image')!.value)))
+      .subscribe((images: IImage[]) => (this.imagesCollection = images));
+
     this.categoryService
       .query()
       .pipe(map((res: HttpResponse<ICategory[]>) => res.body ?? []))
@@ -131,7 +146,6 @@ export class BookUpdateComponent implements OnInit {
       ...new Book(),
       id: this.editForm.get(['id'])!.value,
       name: this.editForm.get(['name'])!.value,
-      imageUrl: this.editForm.get(['imageUrl'])!.value,
       pages: this.editForm.get(['pages'])!.value,
       status: this.editForm.get(['status'])!.value,
       likes: this.editForm.get(['likes'])!.value,
@@ -143,6 +157,7 @@ export class BookUpdateComponent implements OnInit {
       lastModifiedDate: this.editForm.get(['lastModifiedDate'])!.value
         ? dayjs(this.editForm.get(['lastModifiedDate'])!.value, DATE_TIME_FORMAT)
         : undefined,
+      image: this.editForm.get(['image'])!.value,
       category: this.editForm.get(['category'])!.value,
     };
   }

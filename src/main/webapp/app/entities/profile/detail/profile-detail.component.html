@@ -30,10 +30,6 @@
         <dd>
           <span>{{ profile.lastName }}</span>
         </dd>
-        <dt><span jhiTranslate="fbsApp.profile.imageUrl">Image Url</span></dt>
-        <dd>
-          <span>{{ profile.imageUrl }}</span>
-        </dd>
         <dt><span jhiTranslate="fbsApp.profile.langKey">Lang Key</span></dt>
         <dd>
           <span>{{ profile.langKey }}</span>
@@ -69,6 +65,12 @@
         <dt><span jhiTranslate="fbsApp.profile.lastModifiedDate">Last Modified Date</span></dt>
         <dd>
           <span>{{ profile.lastModifiedDate | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span jhiTranslate="fbsApp.profile.image">Image</span></dt>
+        <dd>
+          <div *ngIf="profile.image">
+            <a [routerLink]="['/image', profile.image?.id, 'view']">{{ profile.image?.url }}</a>
+          </div>
         </dd>
       </dl>
 

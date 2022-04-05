@@ -13,7 +13,7 @@ import javax.validation.constraints.*;
  */
 @Entity
 @Table(name = "apex_category")
-public class Category implements Serializable {
+public class Category extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -28,23 +28,8 @@ public class Category implements Serializable {
     @Column(name = "name", length = 50, nullable = false)
     private String name;
 
-    @NotNull
-    @Size(max = 50)
-    @Column(name = "created_by", length = 50, nullable = false)
-    private String createdBy;
-
-    @Column(name = "created_date")
-    private Instant createdDate;
-
-    @Size(max = 50)
-    @Column(name = "last_modified_by", length = 50)
-    private String lastModifiedBy;
-
-    @Column(name = "last_modified_date")
-    private Instant lastModifiedDate;
-
     @OneToMany(mappedBy = "category")
-    @JsonIgnoreProperties(value = { "category", "exchange", "authors" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "image", "category", "authors" }, allowSetters = true)
     private Set<Book> books = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
@@ -75,56 +60,24 @@ public class Category implements Serializable {
         this.name = name;
     }
 
-    public String getCreatedBy() {
-        return this.createdBy;
-    }
-
     public Category createdBy(String createdBy) {
-        this.setCreatedBy(createdBy);
+        setCreatedBy(createdBy);
         return this;
-    }
-
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
-    }
-
-    public Instant getCreatedDate() {
-        return this.createdDate;
     }
 
     public Category createdDate(Instant createdDate) {
-        this.setCreatedDate(createdDate);
+        setCreatedDate(createdDate);
         return this;
-    }
-
-    public void setCreatedDate(Instant createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    public String getLastModifiedBy() {
-        return this.lastModifiedBy;
     }
 
     public Category lastModifiedBy(String lastModifiedBy) {
-        this.setLastModifiedBy(lastModifiedBy);
+        setLastModifiedBy(lastModifiedBy);
         return this;
-    }
-
-    public void setLastModifiedBy(String lastModifiedBy) {
-        this.lastModifiedBy = lastModifiedBy;
-    }
-
-    public Instant getLastModifiedDate() {
-        return this.lastModifiedDate;
     }
 
     public Category lastModifiedDate(Instant lastModifiedDate) {
-        this.setLastModifiedDate(lastModifiedDate);
+        setLastModifiedDate(lastModifiedDate);
         return this;
-    }
-
-    public void setLastModifiedDate(Instant lastModifiedDate) {
-        this.lastModifiedDate = lastModifiedDate;
     }
 
     public Set<Book> getBooks() {

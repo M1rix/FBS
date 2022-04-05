@@ -23,7 +23,7 @@ import uz.apextech.fbs.IntegrationTest;
 import uz.apextech.fbs.domain.Author;
 import uz.apextech.fbs.domain.Book;
 import uz.apextech.fbs.domain.Category;
-import uz.apextech.fbs.domain.Exchange;
+import uz.apextech.fbs.domain.Image;
 import uz.apextech.fbs.domain.enumeration.BookStatus;
 import uz.apextech.fbs.repository.BookRepository;
 import uz.apextech.fbs.service.criteria.BookCriteria;
@@ -40,9 +40,6 @@ class BookResourceIT {
 
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
     private static final String UPDATED_NAME = "BBBBBBBBBB";
-
-    private static final String DEFAULT_IMAGE_URL = "AAAAAAAAAA";
-    private static final String UPDATED_IMAGE_URL = "BBBBBBBBBB";
 
     private static final Integer DEFAULT_PAGES = 0;
     private static final Integer UPDATED_PAGES = 1;
@@ -96,7 +93,6 @@ class BookResourceIT {
     public static Book createEntity(EntityManager em) {
         Book book = new Book()
             .name(DEFAULT_NAME)
-            .imageUrl(DEFAULT_IMAGE_URL)
             .pages(DEFAULT_PAGES)
             .status(DEFAULT_STATUS)
             .likes(DEFAULT_LIKES)
@@ -116,7 +112,6 @@ class BookResourceIT {
     public static Book createUpdatedEntity(EntityManager em) {
         Book book = new Book()
             .name(UPDATED_NAME)
-            .imageUrl(UPDATED_IMAGE_URL)
             .pages(UPDATED_PAGES)
             .status(UPDATED_STATUS)
             .likes(UPDATED_LIKES)
@@ -147,7 +142,6 @@ class BookResourceIT {
         assertThat(bookList).hasSize(databaseSizeBeforeCreate + 1);
         Book testBook = bookList.get(bookList.size() - 1);
         assertThat(testBook.getName()).isEqualTo(DEFAULT_NAME);
-        assertThat(testBook.getImageUrl()).isEqualTo(DEFAULT_IMAGE_URL);
         assertThat(testBook.getPages()).isEqualTo(DEFAULT_PAGES);
         assertThat(testBook.getStatus()).isEqualTo(DEFAULT_STATUS);
         assertThat(testBook.getLikes()).isEqualTo(DEFAULT_LIKES);
@@ -174,24 +168,6 @@ class BookResourceIT {
         // Validate the Book in the database
         List<Book> bookList = bookRepository.findAll();
         assertThat(bookList).hasSize(databaseSizeBeforeCreate);
-    }
-
-    @Test
-    @Transactional
-    void checkImageUrlIsRequired() throws Exception {
-        int databaseSizeBeforeTest = bookRepository.findAll().size();
-        // set the field null
-        book.setImageUrl(null);
-
-        // Create the Book, which fails.
-        BookDTO bookDTO = bookMapper.toDto(book);
-
-        restBookMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(bookDTO)))
-            .andExpect(status().isBadRequest());
-
-        List<Book> bookList = bookRepository.findAll();
-        assertThat(bookList).hasSize(databaseSizeBeforeTest);
     }
 
     @Test
@@ -261,7 +237,6 @@ class BookResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(book.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
-            .andExpect(jsonPath("$.[*].imageUrl").value(hasItem(DEFAULT_IMAGE_URL)))
             .andExpect(jsonPath("$.[*].pages").value(hasItem(DEFAULT_PAGES)))
             .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS.toString())))
             .andExpect(jsonPath("$.[*].likes").value(hasItem(DEFAULT_LIKES.intValue())))
@@ -284,7 +259,6 @@ class BookResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(book.getId().intValue()))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
-            .andExpect(jsonPath("$.imageUrl").value(DEFAULT_IMAGE_URL))
             .andExpect(jsonPath("$.pages").value(DEFAULT_PAGES))
             .andExpect(jsonPath("$.status").value(DEFAULT_STATUS.toString()))
             .andExpect(jsonPath("$.likes").value(DEFAULT_LIKES.intValue()))
@@ -388,84 +362,6 @@ class BookResourceIT {
 
         // Get all the bookList where name does not contain UPDATED_NAME
         defaultBookShouldBeFound("name.doesNotContain=" + UPDATED_NAME);
-    }
-
-    @Test
-    @Transactional
-    void getAllBooksByImageUrlIsEqualToSomething() throws Exception {
-        // Initialize the database
-        bookRepository.saveAndFlush(book);
-
-        // Get all the bookList where imageUrl equals to DEFAULT_IMAGE_URL
-        defaultBookShouldBeFound("imageUrl.equals=" + DEFAULT_IMAGE_URL);
-
-        // Get all the bookList where imageUrl equals to UPDATED_IMAGE_URL
-        defaultBookShouldNotBeFound("imageUrl.equals=" + UPDATED_IMAGE_URL);
-    }
-
-    @Test
-    @Transactional
-    void getAllBooksByImageUrlIsNotEqualToSomething() throws Exception {
-        // Initialize the database
-        bookRepository.saveAndFlush(book);
-
-        // Get all the bookList where imageUrl not equals to DEFAULT_IMAGE_URL
-        defaultBookShouldNotBeFound("imageUrl.notEquals=" + DEFAULT_IMAGE_URL);
-
-        // Get all the bookList where imageUrl not equals to UPDATED_IMAGE_URL
-        defaultBookShouldBeFound("imageUrl.notEquals=" + UPDATED_IMAGE_URL);
-    }
-
-    @Test
-    @Transactional
-    void getAllBooksByImageUrlIsInShouldWork() throws Exception {
-        // Initialize the database
-        bookRepository.saveAndFlush(book);
-
-        // Get all the bookList where imageUrl in DEFAULT_IMAGE_URL or UPDATED_IMAGE_URL
-        defaultBookShouldBeFound("imageUrl.in=" + DEFAULT_IMAGE_URL + "," + UPDATED_IMAGE_URL);
-
-        // Get all the bookList where imageUrl equals to UPDATED_IMAGE_URL
-        defaultBookShouldNotBeFound("imageUrl.in=" + UPDATED_IMAGE_URL);
-    }
-
-    @Test
-    @Transactional
-    void getAllBooksByImageUrlIsNullOrNotNull() throws Exception {
-        // Initialize the database
-        bookRepository.saveAndFlush(book);
-
-        // Get all the bookList where imageUrl is not null
-        defaultBookShouldBeFound("imageUrl.specified=true");
-
-        // Get all the bookList where imageUrl is null
-        defaultBookShouldNotBeFound("imageUrl.specified=false");
-    }
-
-    @Test
-    @Transactional
-    void getAllBooksByImageUrlContainsSomething() throws Exception {
-        // Initialize the database
-        bookRepository.saveAndFlush(book);
-
-        // Get all the bookList where imageUrl contains DEFAULT_IMAGE_URL
-        defaultBookShouldBeFound("imageUrl.contains=" + DEFAULT_IMAGE_URL);
-
-        // Get all the bookList where imageUrl contains UPDATED_IMAGE_URL
-        defaultBookShouldNotBeFound("imageUrl.contains=" + UPDATED_IMAGE_URL);
-    }
-
-    @Test
-    @Transactional
-    void getAllBooksByImageUrlNotContainsSomething() throws Exception {
-        // Initialize the database
-        bookRepository.saveAndFlush(book);
-
-        // Get all the bookList where imageUrl does not contain DEFAULT_IMAGE_URL
-        defaultBookShouldNotBeFound("imageUrl.doesNotContain=" + DEFAULT_IMAGE_URL);
-
-        // Get all the bookList where imageUrl does not contain UPDATED_IMAGE_URL
-        defaultBookShouldBeFound("imageUrl.doesNotContain=" + UPDATED_IMAGE_URL);
     }
 
     @Test
@@ -990,6 +886,32 @@ class BookResourceIT {
 
     @Test
     @Transactional
+    void getAllBooksByImageIsEqualToSomething() throws Exception {
+        // Initialize the database
+        bookRepository.saveAndFlush(book);
+        Image image;
+        if (TestUtil.findAll(em, Image.class).isEmpty()) {
+            image = ImageResourceIT.createEntity(em);
+            em.persist(image);
+            em.flush();
+        } else {
+            image = TestUtil.findAll(em, Image.class).get(0);
+        }
+        em.persist(image);
+        em.flush();
+        book.setImage(image);
+        bookRepository.saveAndFlush(book);
+        Long imageId = image.getId();
+
+        // Get all the bookList where image equals to imageId
+        defaultBookShouldBeFound("imageId.equals=" + imageId);
+
+        // Get all the bookList where image equals to (imageId + 1)
+        defaultBookShouldNotBeFound("imageId.equals=" + (imageId + 1));
+    }
+
+    @Test
+    @Transactional
     void getAllBooksByCategoryIsEqualToSomething() throws Exception {
         // Initialize the database
         bookRepository.saveAndFlush(book);
@@ -1012,33 +934,6 @@ class BookResourceIT {
 
         // Get all the bookList where category equals to (categoryId + 1)
         defaultBookShouldNotBeFound("categoryId.equals=" + (categoryId + 1));
-    }
-
-    @Test
-    @Transactional
-    void getAllBooksByExchangeIsEqualToSomething() throws Exception {
-        // Initialize the database
-        bookRepository.saveAndFlush(book);
-        Exchange exchange;
-        if (TestUtil.findAll(em, Exchange.class).isEmpty()) {
-            exchange = ExchangeResourceIT.createEntity(em);
-            em.persist(exchange);
-            em.flush();
-        } else {
-            exchange = TestUtil.findAll(em, Exchange.class).get(0);
-        }
-        em.persist(exchange);
-        em.flush();
-        book.setExchange(exchange);
-        exchange.setBook(book);
-        bookRepository.saveAndFlush(book);
-        Long exchangeId = exchange.getId();
-
-        // Get all the bookList where exchange equals to exchangeId
-        defaultBookShouldBeFound("exchangeId.equals=" + exchangeId);
-
-        // Get all the bookList where exchange equals to (exchangeId + 1)
-        defaultBookShouldNotBeFound("exchangeId.equals=" + (exchangeId + 1));
     }
 
     @Test
@@ -1077,7 +972,6 @@ class BookResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(book.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
-            .andExpect(jsonPath("$.[*].imageUrl").value(hasItem(DEFAULT_IMAGE_URL)))
             .andExpect(jsonPath("$.[*].pages").value(hasItem(DEFAULT_PAGES)))
             .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS.toString())))
             .andExpect(jsonPath("$.[*].likes").value(hasItem(DEFAULT_LIKES.intValue())))
@@ -1134,7 +1028,6 @@ class BookResourceIT {
         em.detach(updatedBook);
         updatedBook
             .name(UPDATED_NAME)
-            .imageUrl(UPDATED_IMAGE_URL)
             .pages(UPDATED_PAGES)
             .status(UPDATED_STATUS)
             .likes(UPDATED_LIKES)
@@ -1157,7 +1050,6 @@ class BookResourceIT {
         assertThat(bookList).hasSize(databaseSizeBeforeUpdate);
         Book testBook = bookList.get(bookList.size() - 1);
         assertThat(testBook.getName()).isEqualTo(UPDATED_NAME);
-        assertThat(testBook.getImageUrl()).isEqualTo(UPDATED_IMAGE_URL);
         assertThat(testBook.getPages()).isEqualTo(UPDATED_PAGES);
         assertThat(testBook.getStatus()).isEqualTo(UPDATED_STATUS);
         assertThat(testBook.getLikes()).isEqualTo(UPDATED_LIKES);
@@ -1244,7 +1136,7 @@ class BookResourceIT {
         Book partialUpdatedBook = new Book();
         partialUpdatedBook.setId(book.getId());
 
-        partialUpdatedBook.likes(UPDATED_LIKES).lastModifiedBy(UPDATED_LAST_MODIFIED_BY);
+        partialUpdatedBook.createdBy(UPDATED_CREATED_BY).lastModifiedDate(UPDATED_LAST_MODIFIED_DATE);
 
         restBookMockMvc
             .perform(
@@ -1259,14 +1151,13 @@ class BookResourceIT {
         assertThat(bookList).hasSize(databaseSizeBeforeUpdate);
         Book testBook = bookList.get(bookList.size() - 1);
         assertThat(testBook.getName()).isEqualTo(DEFAULT_NAME);
-        assertThat(testBook.getImageUrl()).isEqualTo(DEFAULT_IMAGE_URL);
         assertThat(testBook.getPages()).isEqualTo(DEFAULT_PAGES);
         assertThat(testBook.getStatus()).isEqualTo(DEFAULT_STATUS);
-        assertThat(testBook.getLikes()).isEqualTo(UPDATED_LIKES);
-        assertThat(testBook.getCreatedBy()).isEqualTo(DEFAULT_CREATED_BY);
+        assertThat(testBook.getLikes()).isEqualTo(DEFAULT_LIKES);
+        assertThat(testBook.getCreatedBy()).isEqualTo(UPDATED_CREATED_BY);
         assertThat(testBook.getCreatedDate()).isEqualTo(DEFAULT_CREATED_DATE);
-        assertThat(testBook.getLastModifiedBy()).isEqualTo(UPDATED_LAST_MODIFIED_BY);
-        assertThat(testBook.getLastModifiedDate()).isEqualTo(DEFAULT_LAST_MODIFIED_DATE);
+        assertThat(testBook.getLastModifiedBy()).isEqualTo(DEFAULT_LAST_MODIFIED_BY);
+        assertThat(testBook.getLastModifiedDate()).isEqualTo(UPDATED_LAST_MODIFIED_DATE);
     }
 
     @Test
@@ -1283,7 +1174,6 @@ class BookResourceIT {
 
         partialUpdatedBook
             .name(UPDATED_NAME)
-            .imageUrl(UPDATED_IMAGE_URL)
             .pages(UPDATED_PAGES)
             .status(UPDATED_STATUS)
             .likes(UPDATED_LIKES)
@@ -1305,7 +1195,6 @@ class BookResourceIT {
         assertThat(bookList).hasSize(databaseSizeBeforeUpdate);
         Book testBook = bookList.get(bookList.size() - 1);
         assertThat(testBook.getName()).isEqualTo(UPDATED_NAME);
-        assertThat(testBook.getImageUrl()).isEqualTo(UPDATED_IMAGE_URL);
         assertThat(testBook.getPages()).isEqualTo(UPDATED_PAGES);
         assertThat(testBook.getStatus()).isEqualTo(UPDATED_STATUS);
         assertThat(testBook.getLikes()).isEqualTo(UPDATED_LIKES);

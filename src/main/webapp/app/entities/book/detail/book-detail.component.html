@@ -18,10 +18,6 @@
         <dd>
           <span>{{ book.name }}</span>
         </dd>
-        <dt><span jhiTranslate="fbsApp.book.imageUrl">Image Url</span></dt>
-        <dd>
-          <span>{{ book.imageUrl }}</span>
-        </dd>
         <dt><span jhiTranslate="fbsApp.book.pages">Pages</span></dt>
         <dd>
           <span>{{ book.pages }}</span>
@@ -49,6 +45,12 @@
         <dt><span jhiTranslate="fbsApp.book.lastModifiedDate">Last Modified Date</span></dt>
         <dd>
           <span>{{ book.lastModifiedDate | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span jhiTranslate="fbsApp.book.image">Image</span></dt>
+        <dd>
+          <div *ngIf="book.image">
+            <a [routerLink]="['/image', book.image?.id, 'view']">{{ book.image?.url }}</a>
+          </div>
         </dd>
         <dt><span jhiTranslate="fbsApp.book.category">Category</span></dt>
         <dd>

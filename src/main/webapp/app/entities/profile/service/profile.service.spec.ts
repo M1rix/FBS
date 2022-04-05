@@ -31,7 +31,6 @@ describe('Profile Service', () => {
       accessToken: 'AAAAAAA',
       firstName: 'AAAAAAA',
       lastName: 'AAAAAAA',
-      imageUrl: 'AAAAAAA',
       langKey: 'AAAAAAA',
       gender: Gender.MALE,
       score: 0,
@@ -94,7 +93,6 @@ describe('Profile Service', () => {
           accessToken: 'BBBBBB',
           firstName: 'BBBBBB',
           lastName: 'BBBBBB',
-          imageUrl: 'BBBBBB',
           langKey: 'BBBBBB',
           gender: 'BBBBBB',
           score: 1,
@@ -127,10 +125,9 @@ describe('Profile Service', () => {
       const patchObject = Object.assign(
         {
           firstName: 'BBBBBB',
-          langKey: 'BBBBBB',
-          likes: 1,
-          createdBy: 'BBBBBB',
-          lastModifiedDate: currentDate.format(DATE_TIME_FORMAT),
+          gender: 'BBBBBB',
+          status: 'BBBBBB',
+          createdDate: currentDate.format(DATE_TIME_FORMAT),
         },
         new Profile()
       );
@@ -160,7 +157,6 @@ describe('Profile Service', () => {
           accessToken: 'BBBBBB',
           firstName: 'BBBBBB',
           lastName: 'BBBBBB',
-          imageUrl: 'BBBBBB',
           langKey: 'BBBBBB',
           gender: 'BBBBBB',
           score: 1,
@@ -227,7 +223,7 @@ describe('Profile Service', () => {
       });
 
       it('should add only unique Profile to an array', () => {
-        const profileArray: IProfile[] = [{ id: 123 }, { id: 456 }, { id: 62652 }];
+        const profileArray: IProfile[] = [{ id: 123 }, { id: 456 }, { id: 65213 }];
         const profileCollection: IProfile[] = [{ id: 123 }];
         expectedResult = service.addProfileToCollectionIfMissing(profileCollection, ...profileArray);
         expect(expectedResult).toHaveLength(3);

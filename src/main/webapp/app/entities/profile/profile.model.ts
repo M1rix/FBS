@@ -1,4 +1,5 @@
 import dayjs from 'dayjs/esm';
+import { IImage } from 'app/entities/image/image.model';
 import { Gender } from 'app/entities/enumerations/gender.model';
 import { ProfileStatus } from 'app/entities/enumerations/profile-status.model';
 
@@ -8,7 +9,6 @@ export interface IProfile {
   accessToken?: string;
   firstName?: string | null;
   lastName?: string | null;
-  imageUrl?: string;
   langKey?: string;
   gender?: Gender | null;
   score?: number | null;
@@ -18,6 +18,7 @@ export interface IProfile {
   createdDate?: dayjs.Dayjs | null;
   lastModifiedBy?: string | null;
   lastModifiedDate?: dayjs.Dayjs | null;
+  image?: IImage | null;
 }
 
 export class Profile implements IProfile {
@@ -27,7 +28,6 @@ export class Profile implements IProfile {
     public accessToken?: string,
     public firstName?: string | null,
     public lastName?: string | null,
-    public imageUrl?: string,
     public langKey?: string,
     public gender?: Gender | null,
     public score?: number | null,
@@ -36,7 +36,8 @@ export class Profile implements IProfile {
     public createdBy?: string,
     public createdDate?: dayjs.Dayjs | null,
     public lastModifiedBy?: string | null,
-    public lastModifiedDate?: dayjs.Dayjs | null
+    public lastModifiedDate?: dayjs.Dayjs | null,
+    public image?: IImage | null
   ) {}
 }
 

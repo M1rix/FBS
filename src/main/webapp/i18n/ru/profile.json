@@ -22,7 +22,6 @@
       "accessToken": "Access Token",
       "firstName": "First Name",
       "lastName": "Last Name",
-      "imageUrl": "Image Url",
       "langKey": "Lang Key",
       "gender": "Gender",
       "score": "Score",
@@ -31,7 +30,8 @@
       "createdBy": "Created By",
       "createdDate": "Created Date",
       "lastModifiedBy": "Last Modified By",
-      "lastModifiedDate": "Last Modified Date"
+      "lastModifiedDate": "Last Modified Date",
+      "image": "Image"
     }
   }
 }

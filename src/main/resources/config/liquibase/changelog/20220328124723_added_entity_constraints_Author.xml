@@ -8,6 +8,12 @@
     -->
     <changeSet id="20220328124723-2" author="jhipster">
 
+        <addForeignKeyConstraint baseColumnNames="image_id"
+                                 baseTableName="apex_author"
+                                 constraintName="fk_apex_author__image_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="apex_image"/>
+
         <addForeignKeyConstraint baseColumnNames="book_id"
                                  baseTableName="apex_author"
                                  constraintName="fk_apex_author__book_id"

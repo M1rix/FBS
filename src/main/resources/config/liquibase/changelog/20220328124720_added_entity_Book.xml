@@ -17,9 +17,6 @@
             <column name="name" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-            <column name="image_url" type="varchar(255)">
-                <constraints nullable="false" />
-            </column>
             <column name="pages" type="integer">
                 <constraints nullable="true" />
             </column>
@@ -40,6 +37,9 @@
             </column>
             <column name="last_modified_date" type="${datetimeType}">
                 <constraints nullable="true" />
+            </column>
+            <column name="image_id" type="bigint">
+                <constraints nullable="true" unique="true" uniqueConstraintName="ux_apex_book__image_id" />
             </column>
             <column name="category_id" type="bigint">
                 <constraints nullable="true" />
@@ -68,7 +68,6 @@
                   usePreparedStatements="true">
             <column name="id" type="numeric"/>
             <column name="name" type="string"/>
-            <column name="image_url" type="string"/>
             <column name="pages" type="numeric"/>
             <column name="status" type="string"/>
             <column name="likes" type="numeric"/>

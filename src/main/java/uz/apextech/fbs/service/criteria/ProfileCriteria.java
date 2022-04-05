@@ -73,8 +73,6 @@ public class ProfileCriteria implements Serializable, Criteria {
 
     private StringFilter lastName;
 
-    private StringFilter imageUrl;
-
     private StringFilter langKey;
 
     private GenderFilter gender;
@@ -93,6 +91,8 @@ public class ProfileCriteria implements Serializable, Criteria {
 
     private InstantFilter lastModifiedDate;
 
+    private LongFilter imageId;
+
     private Boolean distinct;
 
     public ProfileCriteria() {}
@@ -103,7 +103,6 @@ public class ProfileCriteria implements Serializable, Criteria {
         this.accessToken = other.accessToken == null ? null : other.accessToken.copy();
         this.firstName = other.firstName == null ? null : other.firstName.copy();
         this.lastName = other.lastName == null ? null : other.lastName.copy();
-        this.imageUrl = other.imageUrl == null ? null : other.imageUrl.copy();
         this.langKey = other.langKey == null ? null : other.langKey.copy();
         this.gender = other.gender == null ? null : other.gender.copy();
         this.score = other.score == null ? null : other.score.copy();
@@ -113,6 +112,7 @@ public class ProfileCriteria implements Serializable, Criteria {
         this.createdDate = other.createdDate == null ? null : other.createdDate.copy();
         this.lastModifiedBy = other.lastModifiedBy == null ? null : other.lastModifiedBy.copy();
         this.lastModifiedDate = other.lastModifiedDate == null ? null : other.lastModifiedDate.copy();
+        this.imageId = other.imageId == null ? null : other.imageId.copy();
         this.distinct = other.distinct;
     }
 
@@ -194,21 +194,6 @@ public class ProfileCriteria implements Serializable, Criteria {
 
     public void setLastName(StringFilter lastName) {
         this.lastName = lastName;
-    }
-
-    public StringFilter getImageUrl() {
-        return imageUrl;
-    }
-
-    public StringFilter imageUrl() {
-        if (imageUrl == null) {
-            imageUrl = new StringFilter();
-        }
-        return imageUrl;
-    }
-
-    public void setImageUrl(StringFilter imageUrl) {
-        this.imageUrl = imageUrl;
     }
 
     public StringFilter getLangKey() {
@@ -346,6 +331,21 @@ public class ProfileCriteria implements Serializable, Criteria {
         this.lastModifiedDate = lastModifiedDate;
     }
 
+    public LongFilter getImageId() {
+        return imageId;
+    }
+
+    public LongFilter imageId() {
+        if (imageId == null) {
+            imageId = new LongFilter();
+        }
+        return imageId;
+    }
+
+    public void setImageId(LongFilter imageId) {
+        this.imageId = imageId;
+    }
+
     public Boolean getDistinct() {
         return distinct;
     }
@@ -369,7 +369,6 @@ public class ProfileCriteria implements Serializable, Criteria {
             Objects.equals(accessToken, that.accessToken) &&
             Objects.equals(firstName, that.firstName) &&
             Objects.equals(lastName, that.lastName) &&
-            Objects.equals(imageUrl, that.imageUrl) &&
             Objects.equals(langKey, that.langKey) &&
             Objects.equals(gender, that.gender) &&
             Objects.equals(score, that.score) &&
@@ -379,6 +378,7 @@ public class ProfileCriteria implements Serializable, Criteria {
             Objects.equals(createdDate, that.createdDate) &&
             Objects.equals(lastModifiedBy, that.lastModifiedBy) &&
             Objects.equals(lastModifiedDate, that.lastModifiedDate) &&
+            Objects.equals(imageId, that.imageId) &&
             Objects.equals(distinct, that.distinct)
         );
     }
@@ -391,7 +391,6 @@ public class ProfileCriteria implements Serializable, Criteria {
             accessToken,
             firstName,
             lastName,
-            imageUrl,
             langKey,
             gender,
             score,
@@ -401,6 +400,7 @@ public class ProfileCriteria implements Serializable, Criteria {
             createdDate,
             lastModifiedBy,
             lastModifiedDate,
+            imageId,
             distinct
         );
     }
@@ -414,7 +414,6 @@ public class ProfileCriteria implements Serializable, Criteria {
             (accessToken != null ? "accessToken=" + accessToken + ", " : "") +
             (firstName != null ? "firstName=" + firstName + ", " : "") +
             (lastName != null ? "lastName=" + lastName + ", " : "") +
-            (imageUrl != null ? "imageUrl=" + imageUrl + ", " : "") +
             (langKey != null ? "langKey=" + langKey + ", " : "") +
             (gender != null ? "gender=" + gender + ", " : "") +
             (score != null ? "score=" + score + ", " : "") +
@@ -424,6 +423,7 @@ public class ProfileCriteria implements Serializable, Criteria {
             (createdDate != null ? "createdDate=" + createdDate + ", " : "") +
             (lastModifiedBy != null ? "lastModifiedBy=" + lastModifiedBy + ", " : "") +
             (lastModifiedDate != null ? "lastModifiedDate=" + lastModifiedDate + ", " : "") +
+            (imageId != null ? "imageId=" + imageId + ", " : "") +
             (distinct != null ? "distinct=" + distinct + ", " : "") +
             "}";
     }

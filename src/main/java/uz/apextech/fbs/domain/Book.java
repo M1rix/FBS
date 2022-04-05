@@ -14,7 +14,7 @@ import uz.apextech.fbs.domain.enumeration.BookStatus;
  */
 @Entity
 @Table(name = "apex_book")
-public class Book implements Serializable {
+public class Book extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -27,11 +27,6 @@ public class Book implements Serializable {
     @Size(max = 255)
     @Column(name = "name", length = 255)
     private String name;
-
-    @NotNull
-    @Size(max = 255)
-    @Column(name = "image_url", length = 255, nullable = false)
-    private String imageUrl;
 
     @Min(value = 0)
     @Column(name = "pages")
@@ -46,32 +41,16 @@ public class Book implements Serializable {
     @Column(name = "likes")
     private Long likes;
 
-    @NotNull
-    @Size(max = 50)
-    @Column(name = "created_by", length = 50, nullable = false)
-    private String createdBy;
-
-    @NotNull
-    @Column(name = "created_date", nullable = false)
-    private Instant createdDate;
-
-    @Size(max = 50)
-    @Column(name = "last_modified_by", length = 50)
-    private String lastModifiedBy;
-
-    @Column(name = "last_modified_date")
-    private Instant lastModifiedDate;
+    @OneToOne
+    @JoinColumn(unique = true)
+    private Image image;
 
     @ManyToOne
     @JsonIgnoreProperties(value = { "books" }, allowSetters = true)
     private Category category;
 
-    @JsonIgnoreProperties(value = { "formProfile", "toProfile", "book" }, allowSetters = true)
-    @OneToOne(mappedBy = "book")
-    private Exchange exchange;
-
     @OneToMany(mappedBy = "book")
-    @JsonIgnoreProperties(value = { "book" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "image", "book" }, allowSetters = true)
     private Set<Author> authors = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
@@ -100,19 +79,6 @@ public class Book implements Serializable {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getImageUrl() {
-        return this.imageUrl;
-    }
-
-    public Book imageUrl(String imageUrl) {
-        this.setImageUrl(imageUrl);
-        return this;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
     }
 
     public Integer getPages() {
@@ -154,56 +120,37 @@ public class Book implements Serializable {
         this.likes = likes;
     }
 
-    public String getCreatedBy() {
-        return this.createdBy;
-    }
-
     public Book createdBy(String createdBy) {
-        this.setCreatedBy(createdBy);
+        setCreatedBy(createdBy);
         return this;
-    }
-
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
-    }
-
-    public Instant getCreatedDate() {
-        return this.createdDate;
     }
 
     public Book createdDate(Instant createdDate) {
-        this.setCreatedDate(createdDate);
+        setCreatedDate(createdDate);
         return this;
-    }
-
-    public void setCreatedDate(Instant createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    public String getLastModifiedBy() {
-        return this.lastModifiedBy;
     }
 
     public Book lastModifiedBy(String lastModifiedBy) {
-        this.setLastModifiedBy(lastModifiedBy);
+        setLastModifiedBy(lastModifiedBy);
         return this;
-    }
-
-    public void setLastModifiedBy(String lastModifiedBy) {
-        this.lastModifiedBy = lastModifiedBy;
-    }
-
-    public Instant getLastModifiedDate() {
-        return this.lastModifiedDate;
     }
 
     public Book lastModifiedDate(Instant lastModifiedDate) {
-        this.setLastModifiedDate(lastModifiedDate);
+        setLastModifiedDate(lastModifiedDate);
         return this;
     }
 
-    public void setLastModifiedDate(Instant lastModifiedDate) {
-        this.lastModifiedDate = lastModifiedDate;
+    public Image getImage() {
+        return this.image;
+    }
+
+    public void setImage(Image image) {
+        this.image = image;
+    }
+
+    public Book image(Image image) {
+        this.setImage(image);
+        return this;
     }
 
     public Category getCategory() {
@@ -216,25 +163,6 @@ public class Book implements Serializable {
 
     public Book category(Category category) {
         this.setCategory(category);
-        return this;
-    }
-
-    public Exchange getExchange() {
-        return this.exchange;
-    }
-
-    public void setExchange(Exchange exchange) {
-        if (this.exchange != null) {
-            this.exchange.setBook(null);
-        }
-        if (exchange != null) {
-            exchange.setBook(this);
-        }
-        this.exchange = exchange;
-    }
-
-    public Book exchange(Exchange exchange) {
-        this.setExchange(exchange);
         return this;
     }
 
@@ -294,7 +222,6 @@ public class Book implements Serializable {
         return "Book{" +
             "id=" + getId() +
             ", name='" + getName() + "'" +
-            ", imageUrl='" + getImageUrl() + "'" +
             ", pages=" + getPages() +
             ", status='" + getStatus() + "'" +
             ", likes=" + getLikes() +

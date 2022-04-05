@@ -7,7 +7,6 @@ entity Profile(apex_profile){
     accessToken String required minlength(32) maxlength(DEFAULT_MAX_LENGTH) unique
     firstName String maxlength(NAME_MAX_LENGTH)
     lastName String maxlength(NAME_MAX_LENGTH)
-    imageUrl String required maxlength(DEFAULT_MAX_LENGTH)
     langKey String required minlength(2) maxlength(6)
     gender Gender
     score Double min(0) max(5)
@@ -22,7 +21,6 @@ entity Profile(apex_profile){
 
 entity Book(apex_book){
  	name String maxlength(DEFAULT_MAX_LENGTH)
- 	imageUrl String required maxlength(DEFAULT_MAX_LENGTH)
     pages Integer min(0)
     status BookStatus required
     likes Long min(0)
@@ -52,13 +50,24 @@ entity Category(apex_category) {
 entity Author(apex_author){
 	name String maxlength(NAME_MAX_LENGTH)
     lastName String maxlength(NAME_MAX_LENGTH)
-    imageUrl String maxlength(DEFAULT_MAX_LENGTH)
 
     createdBy String required maxlength(NAME_MAX_LENGTH)
     createdDate Instant
     lastModifiedBy String maxlength(NAME_MAX_LENGTH)
     lastModifiedDate Instant
 }
+
+entity Image(apex_image){
+    name String maxlength(NAME_MAX_LENGTH)
+    data ImageBlob required
+    url String maxlength(DEFAULT_MAX_LENGTH)
+
+    createdBy String required maxlength(NAME_MAX_LENGTH)
+    createdDate Instant
+    lastModifiedBy String maxlength(NAME_MAX_LENGTH)
+    lastModifiedDate Instant
+}
+
 enum ProfileStatus{
 	ACTIVE
     INACTIVE
@@ -83,7 +92,10 @@ relationship ManyToOne{
 relationship OneToOne{
 	Exchange{formProfile} to Profile
     Exchange{toProfile} to Profile
-	Exchange to Book
+	Exchange{book(name)} to Book
+    Book{image(url)} to Image
+    Profile{image(url)} to Image
+    Author{image(url)} to Image
 }
 
 dto * with mapstruct

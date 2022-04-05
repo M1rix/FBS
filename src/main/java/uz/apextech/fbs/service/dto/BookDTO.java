@@ -16,10 +16,6 @@ public class BookDTO implements Serializable {
     @Size(max = 255)
     private String name;
 
-    @NotNull
-    @Size(max = 255)
-    private String imageUrl;
-
     @Min(value = 0)
     private Integer pages;
 
@@ -41,6 +37,8 @@ public class BookDTO implements Serializable {
 
     private Instant lastModifiedDate;
 
+    private ImageDTO image;
+
     private CategoryDTO category;
 
     public Long getId() {
@@ -57,14 +55,6 @@ public class BookDTO implements Serializable {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
     }
 
     public Integer getPages() {
@@ -123,6 +113,14 @@ public class BookDTO implements Serializable {
         this.lastModifiedDate = lastModifiedDate;
     }
 
+    public ImageDTO getImage() {
+        return image;
+    }
+
+    public void setImage(ImageDTO image) {
+        this.image = image;
+    }
+
     public CategoryDTO getCategory() {
         return category;
     }
@@ -158,7 +156,6 @@ public class BookDTO implements Serializable {
         return "BookDTO{" +
             "id=" + getId() +
             ", name='" + getName() + "'" +
-            ", imageUrl='" + getImageUrl() + "'" +
             ", pages=" + getPages() +
             ", status='" + getStatus() + "'" +
             ", likes=" + getLikes() +
@@ -166,6 +163,7 @@ public class BookDTO implements Serializable {
             ", createdDate='" + getCreatedDate() + "'" +
             ", lastModifiedBy='" + getLastModifiedBy() + "'" +
             ", lastModifiedDate='" + getLastModifiedDate() + "'" +
+            ", image=" + getImage() +
             ", category=" + getCategory() +
             "}";
     }

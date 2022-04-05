@@ -20,6 +20,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 import uz.apextech.fbs.IntegrationTest;
+import uz.apextech.fbs.domain.Image;
 import uz.apextech.fbs.domain.Profile;
 import uz.apextech.fbs.domain.enumeration.Gender;
 import uz.apextech.fbs.domain.enumeration.ProfileStatus;
@@ -49,9 +50,6 @@ class ProfileResourceIT {
 
     private static final String DEFAULT_LAST_NAME = "AAAAAAAAAA";
     private static final String UPDATED_LAST_NAME = "BBBBBBBBBB";
-
-    private static final String DEFAULT_IMAGE_URL = "AAAAAAAAAA";
-    private static final String UPDATED_IMAGE_URL = "BBBBBBBBBB";
 
     private static final String DEFAULT_LANG_KEY = "AAAAAA";
     private static final String UPDATED_LANG_KEY = "BBBBBB";
@@ -114,7 +112,6 @@ class ProfileResourceIT {
             .accessToken(DEFAULT_ACCESS_TOKEN)
             .firstName(DEFAULT_FIRST_NAME)
             .lastName(DEFAULT_LAST_NAME)
-            .imageUrl(DEFAULT_IMAGE_URL)
             .langKey(DEFAULT_LANG_KEY)
             .gender(DEFAULT_GENDER)
             .score(DEFAULT_SCORE)
@@ -139,7 +136,6 @@ class ProfileResourceIT {
             .accessToken(UPDATED_ACCESS_TOKEN)
             .firstName(UPDATED_FIRST_NAME)
             .lastName(UPDATED_LAST_NAME)
-            .imageUrl(UPDATED_IMAGE_URL)
             .langKey(UPDATED_LANG_KEY)
             .gender(UPDATED_GENDER)
             .score(UPDATED_SCORE)
@@ -175,7 +171,6 @@ class ProfileResourceIT {
         assertThat(testProfile.getAccessToken()).isEqualTo(DEFAULT_ACCESS_TOKEN);
         assertThat(testProfile.getFirstName()).isEqualTo(DEFAULT_FIRST_NAME);
         assertThat(testProfile.getLastName()).isEqualTo(DEFAULT_LAST_NAME);
-        assertThat(testProfile.getImageUrl()).isEqualTo(DEFAULT_IMAGE_URL);
         assertThat(testProfile.getLangKey()).isEqualTo(DEFAULT_LANG_KEY);
         assertThat(testProfile.getGender()).isEqualTo(DEFAULT_GENDER);
         assertThat(testProfile.getScore()).isEqualTo(DEFAULT_SCORE);
@@ -230,24 +225,6 @@ class ProfileResourceIT {
         int databaseSizeBeforeTest = profileRepository.findAll().size();
         // set the field null
         profile.setAccessToken(null);
-
-        // Create the Profile, which fails.
-        ProfileDTO profileDTO = profileMapper.toDto(profile);
-
-        restProfileMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(profileDTO)))
-            .andExpect(status().isBadRequest());
-
-        List<Profile> profileList = profileRepository.findAll();
-        assertThat(profileList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    void checkImageUrlIsRequired() throws Exception {
-        int databaseSizeBeforeTest = profileRepository.findAll().size();
-        // set the field null
-        profile.setImageUrl(null);
 
         // Create the Profile, which fails.
         ProfileDTO profileDTO = profileMapper.toDto(profile);
@@ -330,7 +307,6 @@ class ProfileResourceIT {
             .andExpect(jsonPath("$.[*].accessToken").value(hasItem(DEFAULT_ACCESS_TOKEN)))
             .andExpect(jsonPath("$.[*].firstName").value(hasItem(DEFAULT_FIRST_NAME)))
             .andExpect(jsonPath("$.[*].lastName").value(hasItem(DEFAULT_LAST_NAME)))
-            .andExpect(jsonPath("$.[*].imageUrl").value(hasItem(DEFAULT_IMAGE_URL)))
             .andExpect(jsonPath("$.[*].langKey").value(hasItem(DEFAULT_LANG_KEY)))
             .andExpect(jsonPath("$.[*].gender").value(hasItem(DEFAULT_GENDER.toString())))
             .andExpect(jsonPath("$.[*].score").value(hasItem(DEFAULT_SCORE.doubleValue())))
@@ -358,7 +334,6 @@ class ProfileResourceIT {
             .andExpect(jsonPath("$.accessToken").value(DEFAULT_ACCESS_TOKEN))
             .andExpect(jsonPath("$.firstName").value(DEFAULT_FIRST_NAME))
             .andExpect(jsonPath("$.lastName").value(DEFAULT_LAST_NAME))
-            .andExpect(jsonPath("$.imageUrl").value(DEFAULT_IMAGE_URL))
             .andExpect(jsonPath("$.langKey").value(DEFAULT_LANG_KEY))
             .andExpect(jsonPath("$.gender").value(DEFAULT_GENDER.toString()))
             .andExpect(jsonPath("$.score").value(DEFAULT_SCORE.doubleValue()))
@@ -698,84 +673,6 @@ class ProfileResourceIT {
 
         // Get all the profileList where lastName does not contain UPDATED_LAST_NAME
         defaultProfileShouldBeFound("lastName.doesNotContain=" + UPDATED_LAST_NAME);
-    }
-
-    @Test
-    @Transactional
-    void getAllProfilesByImageUrlIsEqualToSomething() throws Exception {
-        // Initialize the database
-        profileRepository.saveAndFlush(profile);
-
-        // Get all the profileList where imageUrl equals to DEFAULT_IMAGE_URL
-        defaultProfileShouldBeFound("imageUrl.equals=" + DEFAULT_IMAGE_URL);
-
-        // Get all the profileList where imageUrl equals to UPDATED_IMAGE_URL
-        defaultProfileShouldNotBeFound("imageUrl.equals=" + UPDATED_IMAGE_URL);
-    }
-
-    @Test
-    @Transactional
-    void getAllProfilesByImageUrlIsNotEqualToSomething() throws Exception {
-        // Initialize the database
-        profileRepository.saveAndFlush(profile);
-
-        // Get all the profileList where imageUrl not equals to DEFAULT_IMAGE_URL
-        defaultProfileShouldNotBeFound("imageUrl.notEquals=" + DEFAULT_IMAGE_URL);
-
-        // Get all the profileList where imageUrl not equals to UPDATED_IMAGE_URL
-        defaultProfileShouldBeFound("imageUrl.notEquals=" + UPDATED_IMAGE_URL);
-    }
-
-    @Test
-    @Transactional
-    void getAllProfilesByImageUrlIsInShouldWork() throws Exception {
-        // Initialize the database
-        profileRepository.saveAndFlush(profile);
-
-        // Get all the profileList where imageUrl in DEFAULT_IMAGE_URL or UPDATED_IMAGE_URL
-        defaultProfileShouldBeFound("imageUrl.in=" + DEFAULT_IMAGE_URL + "," + UPDATED_IMAGE_URL);
-
-        // Get all the profileList where imageUrl equals to UPDATED_IMAGE_URL
-        defaultProfileShouldNotBeFound("imageUrl.in=" + UPDATED_IMAGE_URL);
-    }
-
-    @Test
-    @Transactional
-    void getAllProfilesByImageUrlIsNullOrNotNull() throws Exception {
-        // Initialize the database
-        profileRepository.saveAndFlush(profile);
-
-        // Get all the profileList where imageUrl is not null
-        defaultProfileShouldBeFound("imageUrl.specified=true");
-
-        // Get all the profileList where imageUrl is null
-        defaultProfileShouldNotBeFound("imageUrl.specified=false");
-    }
-
-    @Test
-    @Transactional
-    void getAllProfilesByImageUrlContainsSomething() throws Exception {
-        // Initialize the database
-        profileRepository.saveAndFlush(profile);
-
-        // Get all the profileList where imageUrl contains DEFAULT_IMAGE_URL
-        defaultProfileShouldBeFound("imageUrl.contains=" + DEFAULT_IMAGE_URL);
-
-        // Get all the profileList where imageUrl contains UPDATED_IMAGE_URL
-        defaultProfileShouldNotBeFound("imageUrl.contains=" + UPDATED_IMAGE_URL);
-    }
-
-    @Test
-    @Transactional
-    void getAllProfilesByImageUrlNotContainsSomething() throws Exception {
-        // Initialize the database
-        profileRepository.saveAndFlush(profile);
-
-        // Get all the profileList where imageUrl does not contain DEFAULT_IMAGE_URL
-        defaultProfileShouldNotBeFound("imageUrl.doesNotContain=" + DEFAULT_IMAGE_URL);
-
-        // Get all the profileList where imageUrl does not contain UPDATED_IMAGE_URL
-        defaultProfileShouldBeFound("imageUrl.doesNotContain=" + UPDATED_IMAGE_URL);
     }
 
     @Test
@@ -1428,6 +1325,32 @@ class ProfileResourceIT {
         defaultProfileShouldNotBeFound("lastModifiedDate.specified=false");
     }
 
+    @Test
+    @Transactional
+    void getAllProfilesByImageIsEqualToSomething() throws Exception {
+        // Initialize the database
+        profileRepository.saveAndFlush(profile);
+        Image image;
+        if (TestUtil.findAll(em, Image.class).isEmpty()) {
+            image = ImageResourceIT.createEntity(em);
+            em.persist(image);
+            em.flush();
+        } else {
+            image = TestUtil.findAll(em, Image.class).get(0);
+        }
+        em.persist(image);
+        em.flush();
+        profile.setImage(image);
+        profileRepository.saveAndFlush(profile);
+        Long imageId = image.getId();
+
+        // Get all the profileList where image equals to imageId
+        defaultProfileShouldBeFound("imageId.equals=" + imageId);
+
+        // Get all the profileList where image equals to (imageId + 1)
+        defaultProfileShouldNotBeFound("imageId.equals=" + (imageId + 1));
+    }
+
     /**
      * Executes the search, and checks that the default entity is returned.
      */
@@ -1441,7 +1364,6 @@ class ProfileResourceIT {
             .andExpect(jsonPath("$.[*].accessToken").value(hasItem(DEFAULT_ACCESS_TOKEN)))
             .andExpect(jsonPath("$.[*].firstName").value(hasItem(DEFAULT_FIRST_NAME)))
             .andExpect(jsonPath("$.[*].lastName").value(hasItem(DEFAULT_LAST_NAME)))
-            .andExpect(jsonPath("$.[*].imageUrl").value(hasItem(DEFAULT_IMAGE_URL)))
             .andExpect(jsonPath("$.[*].langKey").value(hasItem(DEFAULT_LANG_KEY)))
             .andExpect(jsonPath("$.[*].gender").value(hasItem(DEFAULT_GENDER.toString())))
             .andExpect(jsonPath("$.[*].score").value(hasItem(DEFAULT_SCORE.doubleValue())))
@@ -1503,7 +1425,6 @@ class ProfileResourceIT {
             .accessToken(UPDATED_ACCESS_TOKEN)
             .firstName(UPDATED_FIRST_NAME)
             .lastName(UPDATED_LAST_NAME)
-            .imageUrl(UPDATED_IMAGE_URL)
             .langKey(UPDATED_LANG_KEY)
             .gender(UPDATED_GENDER)
             .score(UPDATED_SCORE)
@@ -1531,7 +1452,6 @@ class ProfileResourceIT {
         assertThat(testProfile.getAccessToken()).isEqualTo(UPDATED_ACCESS_TOKEN);
         assertThat(testProfile.getFirstName()).isEqualTo(UPDATED_FIRST_NAME);
         assertThat(testProfile.getLastName()).isEqualTo(UPDATED_LAST_NAME);
-        assertThat(testProfile.getImageUrl()).isEqualTo(UPDATED_IMAGE_URL);
         assertThat(testProfile.getLangKey()).isEqualTo(UPDATED_LANG_KEY);
         assertThat(testProfile.getGender()).isEqualTo(UPDATED_GENDER);
         assertThat(testProfile.getScore()).isEqualTo(UPDATED_SCORE);
@@ -1624,11 +1544,11 @@ class ProfileResourceIT {
             .phone(UPDATED_PHONE)
             .accessToken(UPDATED_ACCESS_TOKEN)
             .firstName(UPDATED_FIRST_NAME)
-            .langKey(UPDATED_LANG_KEY)
-            .likes(UPDATED_LIKES)
+            .gender(UPDATED_GENDER)
             .status(UPDATED_STATUS)
-            .createdDate(UPDATED_CREATED_DATE)
-            .lastModifiedBy(UPDATED_LAST_MODIFIED_BY);
+            .createdBy(UPDATED_CREATED_BY)
+            .lastModifiedBy(UPDATED_LAST_MODIFIED_BY)
+            .lastModifiedDate(UPDATED_LAST_MODIFIED_DATE);
 
         restProfileMockMvc
             .perform(
@@ -1646,16 +1566,15 @@ class ProfileResourceIT {
         assertThat(testProfile.getAccessToken()).isEqualTo(UPDATED_ACCESS_TOKEN);
         assertThat(testProfile.getFirstName()).isEqualTo(UPDATED_FIRST_NAME);
         assertThat(testProfile.getLastName()).isEqualTo(DEFAULT_LAST_NAME);
-        assertThat(testProfile.getImageUrl()).isEqualTo(DEFAULT_IMAGE_URL);
-        assertThat(testProfile.getLangKey()).isEqualTo(UPDATED_LANG_KEY);
-        assertThat(testProfile.getGender()).isEqualTo(DEFAULT_GENDER);
+        assertThat(testProfile.getLangKey()).isEqualTo(DEFAULT_LANG_KEY);
+        assertThat(testProfile.getGender()).isEqualTo(UPDATED_GENDER);
         assertThat(testProfile.getScore()).isEqualTo(DEFAULT_SCORE);
-        assertThat(testProfile.getLikes()).isEqualTo(UPDATED_LIKES);
+        assertThat(testProfile.getLikes()).isEqualTo(DEFAULT_LIKES);
         assertThat(testProfile.getStatus()).isEqualTo(UPDATED_STATUS);
-        assertThat(testProfile.getCreatedBy()).isEqualTo(DEFAULT_CREATED_BY);
-        assertThat(testProfile.getCreatedDate()).isEqualTo(UPDATED_CREATED_DATE);
+        assertThat(testProfile.getCreatedBy()).isEqualTo(UPDATED_CREATED_BY);
+        assertThat(testProfile.getCreatedDate()).isEqualTo(DEFAULT_CREATED_DATE);
         assertThat(testProfile.getLastModifiedBy()).isEqualTo(UPDATED_LAST_MODIFIED_BY);
-        assertThat(testProfile.getLastModifiedDate()).isEqualTo(DEFAULT_LAST_MODIFIED_DATE);
+        assertThat(testProfile.getLastModifiedDate()).isEqualTo(UPDATED_LAST_MODIFIED_DATE);
     }
 
     @Test
@@ -1675,7 +1594,6 @@ class ProfileResourceIT {
             .accessToken(UPDATED_ACCESS_TOKEN)
             .firstName(UPDATED_FIRST_NAME)
             .lastName(UPDATED_LAST_NAME)
-            .imageUrl(UPDATED_IMAGE_URL)
             .langKey(UPDATED_LANG_KEY)
             .gender(UPDATED_GENDER)
             .score(UPDATED_SCORE)
@@ -1702,7 +1620,6 @@ class ProfileResourceIT {
         assertThat(testProfile.getAccessToken()).isEqualTo(UPDATED_ACCESS_TOKEN);
         assertThat(testProfile.getFirstName()).isEqualTo(UPDATED_FIRST_NAME);
         assertThat(testProfile.getLastName()).isEqualTo(UPDATED_LAST_NAME);
-        assertThat(testProfile.getImageUrl()).isEqualTo(UPDATED_IMAGE_URL);
         assertThat(testProfile.getLangKey()).isEqualTo(UPDATED_LANG_KEY);
         assertThat(testProfile.getGender()).isEqualTo(UPDATED_GENDER);
         assertThat(testProfile.getScore()).isEqualTo(UPDATED_SCORE);

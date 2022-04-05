@@ -18,9 +18,6 @@ public class AuthorDTO implements Serializable {
     @Size(max = 50)
     private String lastName;
 
-    @Size(max = 255)
-    private String imageUrl;
-
     @NotNull
     @Size(max = 50)
     private String createdBy;
@@ -31,6 +28,8 @@ public class AuthorDTO implements Serializable {
     private String lastModifiedBy;
 
     private Instant lastModifiedDate;
+
+    private ImageDTO image;
 
     private BookDTO book;
 
@@ -56,14 +55,6 @@ public class AuthorDTO implements Serializable {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
-    }
-
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
     }
 
     public String getCreatedBy() {
@@ -96,6 +87,14 @@ public class AuthorDTO implements Serializable {
 
     public void setLastModifiedDate(Instant lastModifiedDate) {
         this.lastModifiedDate = lastModifiedDate;
+    }
+
+    public ImageDTO getImage() {
+        return image;
+    }
+
+    public void setImage(ImageDTO image) {
+        this.image = image;
     }
 
     public BookDTO getBook() {
@@ -134,11 +133,11 @@ public class AuthorDTO implements Serializable {
             "id=" + getId() +
             ", name='" + getName() + "'" +
             ", lastName='" + getLastName() + "'" +
-            ", imageUrl='" + getImageUrl() + "'" +
             ", createdBy='" + getCreatedBy() + "'" +
             ", createdDate='" + getCreatedDate() + "'" +
             ", lastModifiedBy='" + getLastModifiedBy() + "'" +
             ", lastModifiedDate='" + getLastModifiedDate() + "'" +
+            ", image=" + getImage() +
             ", book=" + getBook() +
             "}";
     }

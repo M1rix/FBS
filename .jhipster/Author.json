@@ -18,12 +18,6 @@
       "fieldValidateRulesMaxlength": "50"
     },
     {
-      "fieldName": "imageUrl",
-      "fieldType": "String",
-      "fieldValidateRules": ["maxlength"],
-      "fieldValidateRulesMaxlength": "255"
-    },
-    {
       "fieldName": "createdBy",
       "fieldType": "String",
       "fieldValidateRules": ["required", "maxlength"],
@@ -50,6 +44,14 @@
   "pagination": "pagination",
   "readOnly": false,
   "relationships": [
+    {
+      "otherEntityField": "url",
+      "otherEntityName": "image",
+      "otherEntityRelationshipName": "author",
+      "ownerSide": true,
+      "relationshipName": "image",
+      "relationshipType": "one-to-one"
+    },
     {
       "otherEntityName": "book",
       "otherEntityRelationshipName": "author",

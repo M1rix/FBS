@@ -125,7 +125,7 @@
               [ngValue]="bookOption.id === editForm.get('book')!.value?.id ? editForm.get('book')!.value : bookOption"
               *ngFor="let bookOption of booksCollection; trackBy: trackBookById"
             >
-              {{ bookOption.id }}
+              {{ bookOption.name }}
             </option>
           </select>
         </div>

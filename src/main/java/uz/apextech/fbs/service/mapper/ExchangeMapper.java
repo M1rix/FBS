@@ -11,6 +11,6 @@ import uz.apextech.fbs.service.dto.ExchangeDTO;
 public interface ExchangeMapper extends EntityMapper<ExchangeDTO, Exchange> {
     @Mapping(target = "formProfile", source = "formProfile", qualifiedByName = "id")
     @Mapping(target = "toProfile", source = "toProfile", qualifiedByName = "id")
-    @Mapping(target = "book", source = "book", qualifiedByName = "id")
+    @Mapping(target = "book", source = "book", qualifiedByName = "name")
     ExchangeDTO toDto(Exchange s);
 }

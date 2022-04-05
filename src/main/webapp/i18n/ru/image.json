@@ -1,0 +1,30 @@
+{
+  "fbsApp": {
+    "image": {
+      "home": {
+        "title": "Images",
+        "refreshListLabel": "Обновить список",
+        "createLabel": "Создать новый Image",
+        "createOrEditLabel": "Создать или отредактировать Image",
+        "notFound": "Images не найдено"
+      },
+      "created": "Новый Image создан с идентификатором {{ param }}",
+      "updated": "Image обновлен с идентификатором {{ param }}",
+      "deleted": "Image удален с идентификатором {{ param }}",
+      "delete": {
+        "question": "Вы уверены что хотите удалить Image {{ id }}?"
+      },
+      "detail": {
+        "title": "Image"
+      },
+      "id": "ID",
+      "name": "Name",
+      "data": "Data",
+      "url": "Url",
+      "createdBy": "Created By",
+      "createdDate": "Created Date",
+      "lastModifiedBy": "Last Modified By",
+      "lastModifiedDate": "Last Modified Date"
+    }
+  }
+}

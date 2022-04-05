@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import uz.apextech.fbs.IntegrationTest;
 import uz.apextech.fbs.domain.Author;
 import uz.apextech.fbs.domain.Book;
+import uz.apextech.fbs.domain.Image;
 import uz.apextech.fbs.repository.AuthorRepository;
 import uz.apextech.fbs.service.criteria.AuthorCriteria;
 import uz.apextech.fbs.service.dto.AuthorDTO;
@@ -40,9 +41,6 @@ class AuthorResourceIT {
 
     private static final String DEFAULT_LAST_NAME = "AAAAAAAAAA";
     private static final String UPDATED_LAST_NAME = "BBBBBBBBBB";
-
-    private static final String DEFAULT_IMAGE_URL = "AAAAAAAAAA";
-    private static final String UPDATED_IMAGE_URL = "BBBBBBBBBB";
 
     private static final String DEFAULT_CREATED_BY = "AAAAAAAAAA";
     private static final String UPDATED_CREATED_BY = "BBBBBBBBBB";
@@ -86,7 +84,6 @@ class AuthorResourceIT {
         Author author = new Author()
             .name(DEFAULT_NAME)
             .lastName(DEFAULT_LAST_NAME)
-            .imageUrl(DEFAULT_IMAGE_URL)
             .createdBy(DEFAULT_CREATED_BY)
             .createdDate(DEFAULT_CREATED_DATE)
             .lastModifiedBy(DEFAULT_LAST_MODIFIED_BY)
@@ -104,7 +101,6 @@ class AuthorResourceIT {
         Author author = new Author()
             .name(UPDATED_NAME)
             .lastName(UPDATED_LAST_NAME)
-            .imageUrl(UPDATED_IMAGE_URL)
             .createdBy(UPDATED_CREATED_BY)
             .createdDate(UPDATED_CREATED_DATE)
             .lastModifiedBy(UPDATED_LAST_MODIFIED_BY)
@@ -133,7 +129,6 @@ class AuthorResourceIT {
         Author testAuthor = authorList.get(authorList.size() - 1);
         assertThat(testAuthor.getName()).isEqualTo(DEFAULT_NAME);
         assertThat(testAuthor.getLastName()).isEqualTo(DEFAULT_LAST_NAME);
-        assertThat(testAuthor.getImageUrl()).isEqualTo(DEFAULT_IMAGE_URL);
         assertThat(testAuthor.getCreatedBy()).isEqualTo(DEFAULT_CREATED_BY);
         assertThat(testAuthor.getCreatedDate()).isEqualTo(DEFAULT_CREATED_DATE);
         assertThat(testAuthor.getLastModifiedBy()).isEqualTo(DEFAULT_LAST_MODIFIED_BY);
@@ -191,7 +186,6 @@ class AuthorResourceIT {
             .andExpect(jsonPath("$.[*].id").value(hasItem(author.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
             .andExpect(jsonPath("$.[*].lastName").value(hasItem(DEFAULT_LAST_NAME)))
-            .andExpect(jsonPath("$.[*].imageUrl").value(hasItem(DEFAULT_IMAGE_URL)))
             .andExpect(jsonPath("$.[*].createdBy").value(hasItem(DEFAULT_CREATED_BY)))
             .andExpect(jsonPath("$.[*].createdDate").value(hasItem(DEFAULT_CREATED_DATE.toString())))
             .andExpect(jsonPath("$.[*].lastModifiedBy").value(hasItem(DEFAULT_LAST_MODIFIED_BY)))
@@ -212,7 +206,6 @@ class AuthorResourceIT {
             .andExpect(jsonPath("$.id").value(author.getId().intValue()))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
             .andExpect(jsonPath("$.lastName").value(DEFAULT_LAST_NAME))
-            .andExpect(jsonPath("$.imageUrl").value(DEFAULT_IMAGE_URL))
             .andExpect(jsonPath("$.createdBy").value(DEFAULT_CREATED_BY))
             .andExpect(jsonPath("$.createdDate").value(DEFAULT_CREATED_DATE.toString()))
             .andExpect(jsonPath("$.lastModifiedBy").value(DEFAULT_LAST_MODIFIED_BY))
@@ -391,84 +384,6 @@ class AuthorResourceIT {
 
         // Get all the authorList where lastName does not contain UPDATED_LAST_NAME
         defaultAuthorShouldBeFound("lastName.doesNotContain=" + UPDATED_LAST_NAME);
-    }
-
-    @Test
-    @Transactional
-    void getAllAuthorsByImageUrlIsEqualToSomething() throws Exception {
-        // Initialize the database
-        authorRepository.saveAndFlush(author);
-
-        // Get all the authorList where imageUrl equals to DEFAULT_IMAGE_URL
-        defaultAuthorShouldBeFound("imageUrl.equals=" + DEFAULT_IMAGE_URL);
-
-        // Get all the authorList where imageUrl equals to UPDATED_IMAGE_URL
-        defaultAuthorShouldNotBeFound("imageUrl.equals=" + UPDATED_IMAGE_URL);
-    }
-
-    @Test
-    @Transactional
-    void getAllAuthorsByImageUrlIsNotEqualToSomething() throws Exception {
-        // Initialize the database
-        authorRepository.saveAndFlush(author);
-
-        // Get all the authorList where imageUrl not equals to DEFAULT_IMAGE_URL
-        defaultAuthorShouldNotBeFound("imageUrl.notEquals=" + DEFAULT_IMAGE_URL);
-
-        // Get all the authorList where imageUrl not equals to UPDATED_IMAGE_URL
-        defaultAuthorShouldBeFound("imageUrl.notEquals=" + UPDATED_IMAGE_URL);
-    }
-
-    @Test
-    @Transactional
-    void getAllAuthorsByImageUrlIsInShouldWork() throws Exception {
-        // Initialize the database
-        authorRepository.saveAndFlush(author);
-
-        // Get all the authorList where imageUrl in DEFAULT_IMAGE_URL or UPDATED_IMAGE_URL
-        defaultAuthorShouldBeFound("imageUrl.in=" + DEFAULT_IMAGE_URL + "," + UPDATED_IMAGE_URL);
-
-        // Get all the authorList where imageUrl equals to UPDATED_IMAGE_URL
-        defaultAuthorShouldNotBeFound("imageUrl.in=" + UPDATED_IMAGE_URL);
-    }
-
-    @Test
-    @Transactional
-    void getAllAuthorsByImageUrlIsNullOrNotNull() throws Exception {
-        // Initialize the database
-        authorRepository.saveAndFlush(author);
-
-        // Get all the authorList where imageUrl is not null
-        defaultAuthorShouldBeFound("imageUrl.specified=true");
-
-        // Get all the authorList where imageUrl is null
-        defaultAuthorShouldNotBeFound("imageUrl.specified=false");
-    }
-
-    @Test
-    @Transactional
-    void getAllAuthorsByImageUrlContainsSomething() throws Exception {
-        // Initialize the database
-        authorRepository.saveAndFlush(author);
-
-        // Get all the authorList where imageUrl contains DEFAULT_IMAGE_URL
-        defaultAuthorShouldBeFound("imageUrl.contains=" + DEFAULT_IMAGE_URL);
-
-        // Get all the authorList where imageUrl contains UPDATED_IMAGE_URL
-        defaultAuthorShouldNotBeFound("imageUrl.contains=" + UPDATED_IMAGE_URL);
-    }
-
-    @Test
-    @Transactional
-    void getAllAuthorsByImageUrlNotContainsSomething() throws Exception {
-        // Initialize the database
-        authorRepository.saveAndFlush(author);
-
-        // Get all the authorList where imageUrl does not contain DEFAULT_IMAGE_URL
-        defaultAuthorShouldNotBeFound("imageUrl.doesNotContain=" + DEFAULT_IMAGE_URL);
-
-        // Get all the authorList where imageUrl does not contain UPDATED_IMAGE_URL
-        defaultAuthorShouldBeFound("imageUrl.doesNotContain=" + UPDATED_IMAGE_URL);
     }
 
     @Test
@@ -733,6 +648,32 @@ class AuthorResourceIT {
 
     @Test
     @Transactional
+    void getAllAuthorsByImageIsEqualToSomething() throws Exception {
+        // Initialize the database
+        authorRepository.saveAndFlush(author);
+        Image image;
+        if (TestUtil.findAll(em, Image.class).isEmpty()) {
+            image = ImageResourceIT.createEntity(em);
+            em.persist(image);
+            em.flush();
+        } else {
+            image = TestUtil.findAll(em, Image.class).get(0);
+        }
+        em.persist(image);
+        em.flush();
+        author.setImage(image);
+        authorRepository.saveAndFlush(author);
+        Long imageId = image.getId();
+
+        // Get all the authorList where image equals to imageId
+        defaultAuthorShouldBeFound("imageId.equals=" + imageId);
+
+        // Get all the authorList where image equals to (imageId + 1)
+        defaultAuthorShouldNotBeFound("imageId.equals=" + (imageId + 1));
+    }
+
+    @Test
+    @Transactional
     void getAllAuthorsByBookIsEqualToSomething() throws Exception {
         // Initialize the database
         authorRepository.saveAndFlush(author);
@@ -768,7 +709,6 @@ class AuthorResourceIT {
             .andExpect(jsonPath("$.[*].id").value(hasItem(author.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
             .andExpect(jsonPath("$.[*].lastName").value(hasItem(DEFAULT_LAST_NAME)))
-            .andExpect(jsonPath("$.[*].imageUrl").value(hasItem(DEFAULT_IMAGE_URL)))
             .andExpect(jsonPath("$.[*].createdBy").value(hasItem(DEFAULT_CREATED_BY)))
             .andExpect(jsonPath("$.[*].createdDate").value(hasItem(DEFAULT_CREATED_DATE.toString())))
             .andExpect(jsonPath("$.[*].lastModifiedBy").value(hasItem(DEFAULT_LAST_MODIFIED_BY)))
@@ -823,7 +763,6 @@ class AuthorResourceIT {
         updatedAuthor
             .name(UPDATED_NAME)
             .lastName(UPDATED_LAST_NAME)
-            .imageUrl(UPDATED_IMAGE_URL)
             .createdBy(UPDATED_CREATED_BY)
             .createdDate(UPDATED_CREATED_DATE)
             .lastModifiedBy(UPDATED_LAST_MODIFIED_BY)
@@ -844,7 +783,6 @@ class AuthorResourceIT {
         Author testAuthor = authorList.get(authorList.size() - 1);
         assertThat(testAuthor.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testAuthor.getLastName()).isEqualTo(UPDATED_LAST_NAME);
-        assertThat(testAuthor.getImageUrl()).isEqualTo(UPDATED_IMAGE_URL);
         assertThat(testAuthor.getCreatedBy()).isEqualTo(UPDATED_CREATED_BY);
         assertThat(testAuthor.getCreatedDate()).isEqualTo(UPDATED_CREATED_DATE);
         assertThat(testAuthor.getLastModifiedBy()).isEqualTo(UPDATED_LAST_MODIFIED_BY);
@@ -928,7 +866,7 @@ class AuthorResourceIT {
         Author partialUpdatedAuthor = new Author();
         partialUpdatedAuthor.setId(author.getId());
 
-        partialUpdatedAuthor.lastName(UPDATED_LAST_NAME).lastModifiedDate(UPDATED_LAST_MODIFIED_DATE);
+        partialUpdatedAuthor.lastName(UPDATED_LAST_NAME);
 
         restAuthorMockMvc
             .perform(
@@ -944,11 +882,10 @@ class AuthorResourceIT {
         Author testAuthor = authorList.get(authorList.size() - 1);
         assertThat(testAuthor.getName()).isEqualTo(DEFAULT_NAME);
         assertThat(testAuthor.getLastName()).isEqualTo(UPDATED_LAST_NAME);
-        assertThat(testAuthor.getImageUrl()).isEqualTo(DEFAULT_IMAGE_URL);
         assertThat(testAuthor.getCreatedBy()).isEqualTo(DEFAULT_CREATED_BY);
         assertThat(testAuthor.getCreatedDate()).isEqualTo(DEFAULT_CREATED_DATE);
         assertThat(testAuthor.getLastModifiedBy()).isEqualTo(DEFAULT_LAST_MODIFIED_BY);
-        assertThat(testAuthor.getLastModifiedDate()).isEqualTo(UPDATED_LAST_MODIFIED_DATE);
+        assertThat(testAuthor.getLastModifiedDate()).isEqualTo(DEFAULT_LAST_MODIFIED_DATE);
     }
 
     @Test
@@ -966,7 +903,6 @@ class AuthorResourceIT {
         partialUpdatedAuthor
             .name(UPDATED_NAME)
             .lastName(UPDATED_LAST_NAME)
-            .imageUrl(UPDATED_IMAGE_URL)
             .createdBy(UPDATED_CREATED_BY)
             .createdDate(UPDATED_CREATED_DATE)
             .lastModifiedBy(UPDATED_LAST_MODIFIED_BY)
@@ -986,7 +922,6 @@ class AuthorResourceIT {
         Author testAuthor = authorList.get(authorList.size() - 1);
         assertThat(testAuthor.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testAuthor.getLastName()).isEqualTo(UPDATED_LAST_NAME);
-        assertThat(testAuthor.getImageUrl()).isEqualTo(UPDATED_IMAGE_URL);
         assertThat(testAuthor.getCreatedBy()).isEqualTo(UPDATED_CREATED_BY);
         assertThat(testAuthor.getCreatedDate()).isEqualTo(UPDATED_CREATED_DATE);
         assertThat(testAuthor.getLastModifiedBy()).isEqualTo(UPDATED_LAST_MODIFIED_BY);

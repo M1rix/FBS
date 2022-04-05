@@ -27,7 +27,6 @@ describe('Author Service', () => {
       id: 0,
       name: 'AAAAAAA',
       lastName: 'AAAAAAA',
-      imageUrl: 'AAAAAAA',
       createdBy: 'AAAAAAA',
       createdDate: currentDate,
       lastModifiedBy: 'AAAAAAA',
@@ -83,7 +82,6 @@ describe('Author Service', () => {
           id: 1,
           name: 'BBBBBB',
           lastName: 'BBBBBB',
-          imageUrl: 'BBBBBB',
           createdBy: 'BBBBBB',
           createdDate: currentDate.format(DATE_TIME_FORMAT),
           lastModifiedBy: 'BBBBBB',
@@ -110,9 +108,9 @@ describe('Author Service', () => {
     it('should partial update a Author', () => {
       const patchObject = Object.assign(
         {
-          imageUrl: 'BBBBBB',
-          createdDate: currentDate.format(DATE_TIME_FORMAT),
+          createdBy: 'BBBBBB',
           lastModifiedBy: 'BBBBBB',
+          lastModifiedDate: currentDate.format(DATE_TIME_FORMAT),
         },
         new Author()
       );
@@ -140,7 +138,6 @@ describe('Author Service', () => {
           id: 1,
           name: 'BBBBBB',
           lastName: 'BBBBBB',
-          imageUrl: 'BBBBBB',
           createdBy: 'BBBBBB',
           createdDate: currentDate.format(DATE_TIME_FORMAT),
           lastModifiedBy: 'BBBBBB',
@@ -202,7 +199,7 @@ describe('Author Service', () => {
       });
 
       it('should add only unique Author to an array', () => {
-        const authorArray: IAuthor[] = [{ id: 123 }, { id: 456 }, { id: 29163 }];
+        const authorArray: IAuthor[] = [{ id: 123 }, { id: 456 }, { id: 6111 }];
         const authorCollection: IAuthor[] = [{ id: 123 }];
         expectedResult = service.addAuthorToCollectionIfMissing(authorCollection, ...authorArray);
         expect(expectedResult).toHaveLength(3);

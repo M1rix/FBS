@@ -49,8 +49,6 @@ public class BookCriteria implements Serializable, Criteria {
 
     private StringFilter name;
 
-    private StringFilter imageUrl;
-
     private IntegerFilter pages;
 
     private BookStatusFilter status;
@@ -65,9 +63,9 @@ public class BookCriteria implements Serializable, Criteria {
 
     private InstantFilter lastModifiedDate;
 
-    private LongFilter categoryId;
+    private LongFilter imageId;
 
-    private LongFilter exchangeId;
+    private LongFilter categoryId;
 
     private LongFilter authorId;
 
@@ -78,7 +76,6 @@ public class BookCriteria implements Serializable, Criteria {
     public BookCriteria(BookCriteria other) {
         this.id = other.id == null ? null : other.id.copy();
         this.name = other.name == null ? null : other.name.copy();
-        this.imageUrl = other.imageUrl == null ? null : other.imageUrl.copy();
         this.pages = other.pages == null ? null : other.pages.copy();
         this.status = other.status == null ? null : other.status.copy();
         this.likes = other.likes == null ? null : other.likes.copy();
@@ -86,8 +83,8 @@ public class BookCriteria implements Serializable, Criteria {
         this.createdDate = other.createdDate == null ? null : other.createdDate.copy();
         this.lastModifiedBy = other.lastModifiedBy == null ? null : other.lastModifiedBy.copy();
         this.lastModifiedDate = other.lastModifiedDate == null ? null : other.lastModifiedDate.copy();
+        this.imageId = other.imageId == null ? null : other.imageId.copy();
         this.categoryId = other.categoryId == null ? null : other.categoryId.copy();
-        this.exchangeId = other.exchangeId == null ? null : other.exchangeId.copy();
         this.authorId = other.authorId == null ? null : other.authorId.copy();
         this.distinct = other.distinct;
     }
@@ -125,21 +122,6 @@ public class BookCriteria implements Serializable, Criteria {
 
     public void setName(StringFilter name) {
         this.name = name;
-    }
-
-    public StringFilter getImageUrl() {
-        return imageUrl;
-    }
-
-    public StringFilter imageUrl() {
-        if (imageUrl == null) {
-            imageUrl = new StringFilter();
-        }
-        return imageUrl;
-    }
-
-    public void setImageUrl(StringFilter imageUrl) {
-        this.imageUrl = imageUrl;
     }
 
     public IntegerFilter getPages() {
@@ -247,6 +229,21 @@ public class BookCriteria implements Serializable, Criteria {
         this.lastModifiedDate = lastModifiedDate;
     }
 
+    public LongFilter getImageId() {
+        return imageId;
+    }
+
+    public LongFilter imageId() {
+        if (imageId == null) {
+            imageId = new LongFilter();
+        }
+        return imageId;
+    }
+
+    public void setImageId(LongFilter imageId) {
+        this.imageId = imageId;
+    }
+
     public LongFilter getCategoryId() {
         return categoryId;
     }
@@ -260,21 +257,6 @@ public class BookCriteria implements Serializable, Criteria {
 
     public void setCategoryId(LongFilter categoryId) {
         this.categoryId = categoryId;
-    }
-
-    public LongFilter getExchangeId() {
-        return exchangeId;
-    }
-
-    public LongFilter exchangeId() {
-        if (exchangeId == null) {
-            exchangeId = new LongFilter();
-        }
-        return exchangeId;
-    }
-
-    public void setExchangeId(LongFilter exchangeId) {
-        this.exchangeId = exchangeId;
     }
 
     public LongFilter getAuthorId() {
@@ -312,7 +294,6 @@ public class BookCriteria implements Serializable, Criteria {
         return (
             Objects.equals(id, that.id) &&
             Objects.equals(name, that.name) &&
-            Objects.equals(imageUrl, that.imageUrl) &&
             Objects.equals(pages, that.pages) &&
             Objects.equals(status, that.status) &&
             Objects.equals(likes, that.likes) &&
@@ -320,8 +301,8 @@ public class BookCriteria implements Serializable, Criteria {
             Objects.equals(createdDate, that.createdDate) &&
             Objects.equals(lastModifiedBy, that.lastModifiedBy) &&
             Objects.equals(lastModifiedDate, that.lastModifiedDate) &&
+            Objects.equals(imageId, that.imageId) &&
             Objects.equals(categoryId, that.categoryId) &&
-            Objects.equals(exchangeId, that.exchangeId) &&
             Objects.equals(authorId, that.authorId) &&
             Objects.equals(distinct, that.distinct)
         );
@@ -332,7 +313,6 @@ public class BookCriteria implements Serializable, Criteria {
         return Objects.hash(
             id,
             name,
-            imageUrl,
             pages,
             status,
             likes,
@@ -340,8 +320,8 @@ public class BookCriteria implements Serializable, Criteria {
             createdDate,
             lastModifiedBy,
             lastModifiedDate,
+            imageId,
             categoryId,
-            exchangeId,
             authorId,
             distinct
         );
@@ -353,7 +333,6 @@ public class BookCriteria implements Serializable, Criteria {
         return "BookCriteria{" +
             (id != null ? "id=" + id + ", " : "") +
             (name != null ? "name=" + name + ", " : "") +
-            (imageUrl != null ? "imageUrl=" + imageUrl + ", " : "") +
             (pages != null ? "pages=" + pages + ", " : "") +
             (status != null ? "status=" + status + ", " : "") +
             (likes != null ? "likes=" + likes + ", " : "") +
@@ -361,8 +340,8 @@ public class BookCriteria implements Serializable, Criteria {
             (createdDate != null ? "createdDate=" + createdDate + ", " : "") +
             (lastModifiedBy != null ? "lastModifiedBy=" + lastModifiedBy + ", " : "") +
             (lastModifiedDate != null ? "lastModifiedDate=" + lastModifiedDate + ", " : "") +
+            (imageId != null ? "imageId=" + imageId + ", " : "") +
             (categoryId != null ? "categoryId=" + categoryId + ", " : "") +
-            (exchangeId != null ? "exchangeId=" + exchangeId + ", " : "") +
             (authorId != null ? "authorId=" + authorId + ", " : "") +
             (distinct != null ? "distinct=" + distinct + ", " : "") +
             "}";
