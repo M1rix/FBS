@@ -19,7 +19,6 @@
       },
       "id": "ID",
       "name": "Name",
-      "imageUrl": "Image Url",
       "pages": "Pages",
       "status": "Status",
       "likes": "Likes",
@@ -27,8 +26,8 @@
       "createdDate": "Created Date",
       "lastModifiedBy": "Last Modified By",
       "lastModifiedDate": "Last Modified Date",
+      "image": "Image",
       "category": "Category",
-      "exchange": "Exchange",
       "author": "Author"
     }
   }

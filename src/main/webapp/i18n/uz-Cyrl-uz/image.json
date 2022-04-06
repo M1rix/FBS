@@ -1,0 +1,30 @@
+{
+  "fbsApp": {
+    "image": {
+      "home": {
+        "title": "Images",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Янги Image қўшиш",
+        "createOrEditLabel": "Imageни таҳрирлаш",
+        "notFound": "No Images found"
+      },
+      "created": "Image {{ param }} билан қўшилди.",
+      "updated": "{{ param }}- Image сақланди.",
+      "deleted": "{{ param }}- Image ўчирилди.",
+      "delete": {
+        "question": "{{ id }}- Imageни ўчирмоқчимисиз? "
+      },
+      "detail": {
+        "title": "Image"
+      },
+      "id": "ID",
+      "name": "Name",
+      "data": "Data",
+      "url": "Url",
+      "createdBy": "Created By",
+      "createdDate": "Created Date",
+      "lastModifiedBy": "Last Modified By",
+      "lastModifiedDate": "Last Modified Date"
+    }
+  }
+}

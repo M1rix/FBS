@@ -43,9 +43,6 @@
           <th scope="col" jhiSortBy="lastName">
             <span jhiTranslate="fbsApp.profile.lastName">Last Name</span> <fa-icon icon="sort"></fa-icon>
           </th>
-          <th scope="col" jhiSortBy="imageUrl">
-            <span jhiTranslate="fbsApp.profile.imageUrl">Image Url</span> <fa-icon icon="sort"></fa-icon>
-          </th>
           <th scope="col" jhiSortBy="langKey">
             <span jhiTranslate="fbsApp.profile.langKey">Lang Key</span> <fa-icon icon="sort"></fa-icon>
           </th>
@@ -65,6 +62,7 @@
           <th scope="col" jhiSortBy="lastModifiedDate">
             <span jhiTranslate="fbsApp.profile.lastModifiedDate">Last Modified Date</span> <fa-icon icon="sort"></fa-icon>
           </th>
+          <th scope="col" jhiSortBy="image.url"><span jhiTranslate="fbsApp.profile.image">Image</span> <fa-icon icon="sort"></fa-icon></th>
           <th scope="col"></th>
         </tr>
       </thead>
@@ -77,7 +75,6 @@
           <td>{{ profile.accessToken }}</td>
           <td>{{ profile.firstName }}</td>
           <td>{{ profile.lastName }}</td>
-          <td>{{ profile.imageUrl }}</td>
           <td>{{ profile.langKey }}</td>
           <td jhiTranslate="{{ 'fbsApp.Gender.' + profile.gender }}">{{ profile.gender }}</td>
           <td>{{ profile.score }}</td>
@@ -87,6 +84,11 @@
           <td>{{ profile.createdDate | formatMediumDatetime }}</td>
           <td>{{ profile.lastModifiedBy }}</td>
           <td>{{ profile.lastModifiedDate | formatMediumDatetime }}</td>
+          <td>
+            <div *ngIf="profile.image">
+              <a [routerLink]="['/image', profile.image?.id, 'view']">{{ profile.image?.url }}</a>
+            </div>
+          </td>
           <td class="text-end">
             <div class="btn-group">
               <button

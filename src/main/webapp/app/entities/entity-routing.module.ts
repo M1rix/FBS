@@ -29,6 +29,11 @@ import { RouterModule } from '@angular/router';
         data: { pageTitle: 'fbsApp.author.home.title' },
         loadChildren: () => import('./author/author.module').then(m => m.AuthorModule),
       },
+      {
+        path: 'image',
+        data: { pageTitle: 'fbsApp.image.home.title' },
+        loadChildren: () => import('./image/image.module').then(m => m.ImageModule),
+      },
       /* jhipster-needle-add-entity-route - JHipster will add entity modules routes here */
     ]),
   ],

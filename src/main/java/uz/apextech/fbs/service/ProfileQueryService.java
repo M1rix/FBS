@@ -102,9 +102,6 @@ public class ProfileQueryService extends QueryService<Profile> {
             if (criteria.getLastName() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getLastName(), Profile_.lastName));
             }
-            if (criteria.getImageUrl() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getImageUrl(), Profile_.imageUrl));
-            }
             if (criteria.getLangKey() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getLangKey(), Profile_.langKey));
             }
@@ -131,6 +128,12 @@ public class ProfileQueryService extends QueryService<Profile> {
             }
             if (criteria.getLastModifiedDate() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getLastModifiedDate(), Profile_.lastModifiedDate));
+            }
+            if (criteria.getImageId() != null) {
+                specification =
+                    specification.and(
+                        buildSpecification(criteria.getImageId(), root -> root.join(Profile_.image, JoinType.LEFT).get(Image_.id))
+                    );
             }
         }
         return specification;

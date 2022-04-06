@@ -1,10 +1,6 @@
 package uz.apextech.fbs.service;
 
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -80,17 +76,12 @@ public class BookService {
     }
 
     /**
-     *  Get all the books where Exchange is {@code null}.
-     *  @return the list of entities.
+     * Get all the books with eager load of many-to-many relationships.
+     *
+     * @return the list of entities.
      */
-    @Transactional(readOnly = true)
-    public List<BookDTO> findAllWhereExchangeIsNull() {
-        log.debug("Request to get all books where Exchange is null");
-        return StreamSupport
-            .stream(bookRepository.findAll().spliterator(), false)
-            .filter(book -> book.getExchange() == null)
-            .map(bookMapper::toDto)
-            .collect(Collectors.toCollection(LinkedList::new));
+    public Page<BookDTO> findAllWithEagerRelationships(Pageable pageable) {
+        return bookRepository.findAllWithEagerRelationships(pageable).map(bookMapper::toDto);
     }
 
     /**
@@ -102,7 +93,7 @@ public class BookService {
     @Transactional(readOnly = true)
     public Optional<BookDTO> findOne(Long id) {
         log.debug("Request to get Book : {}", id);
-        return bookRepository.findById(id).map(bookMapper::toDto);
+        return bookRepository.findOneWithEagerRelationships(id).map(bookMapper::toDto);
     }
 
     /**

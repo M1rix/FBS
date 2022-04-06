@@ -76,6 +76,15 @@ public class ExchangeService {
     }
 
     /**
+     * Get all the exchanges with eager load of many-to-many relationships.
+     *
+     * @return the list of entities.
+     */
+    public Page<ExchangeDTO> findAllWithEagerRelationships(Pageable pageable) {
+        return exchangeRepository.findAllWithEagerRelationships(pageable).map(exchangeMapper::toDto);
+    }
+
+    /**
      * Get one exchange by id.
      *
      * @param id the id of the entity.
@@ -84,7 +93,7 @@ public class ExchangeService {
     @Transactional(readOnly = true)
     public Optional<ExchangeDTO> findOne(Long id) {
         log.debug("Request to get Exchange : {}", id);
-        return exchangeRepository.findById(id).map(exchangeMapper::toDto);
+        return exchangeRepository.findOneWithEagerRelationships(id).map(exchangeMapper::toDto);
     }
 
     /**

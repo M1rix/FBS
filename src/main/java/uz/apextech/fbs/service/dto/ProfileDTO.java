@@ -29,10 +29,6 @@ public class ProfileDTO implements Serializable {
     private String lastName;
 
     @NotNull
-    @Size(max = 255)
-    private String imageUrl;
-
-    @NotNull
     @Size(min = 2, max = 6)
     private String langKey;
 
@@ -58,6 +54,8 @@ public class ProfileDTO implements Serializable {
     private String lastModifiedBy;
 
     private Instant lastModifiedDate;
+
+    private ImageDTO image;
 
     public Long getId() {
         return id;
@@ -97,14 +95,6 @@ public class ProfileDTO implements Serializable {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
-    }
-
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
     }
 
     public String getLangKey() {
@@ -179,6 +169,14 @@ public class ProfileDTO implements Serializable {
         this.lastModifiedDate = lastModifiedDate;
     }
 
+    public ImageDTO getImage() {
+        return image;
+    }
+
+    public void setImage(ImageDTO image) {
+        this.image = image;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -209,7 +207,6 @@ public class ProfileDTO implements Serializable {
             ", accessToken='" + getAccessToken() + "'" +
             ", firstName='" + getFirstName() + "'" +
             ", lastName='" + getLastName() + "'" +
-            ", imageUrl='" + getImageUrl() + "'" +
             ", langKey='" + getLangKey() + "'" +
             ", gender='" + getGender() + "'" +
             ", score=" + getScore() +
@@ -219,6 +216,7 @@ public class ProfileDTO implements Serializable {
             ", createdDate='" + getCreatedDate() + "'" +
             ", lastModifiedBy='" + getLastModifiedBy() + "'" +
             ", lastModifiedDate='" + getLastModifiedDate() + "'" +
+            ", image=" + getImage() +
             "}";
     }
 }

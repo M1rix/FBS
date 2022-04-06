@@ -20,9 +20,6 @@
             <column name="last_name" type="varchar(50)">
                 <constraints nullable="true" />
             </column>
-            <column name="image_url" type="varchar(255)">
-                <constraints nullable="true" />
-            </column>
             <column name="created_by" type="varchar(50)">
                 <constraints nullable="false" />
             </column>
@@ -34,6 +31,9 @@
             </column>
             <column name="last_modified_date" type="${datetimeType}">
                 <constraints nullable="true" />
+            </column>
+            <column name="image_id" type="bigint">
+                <constraints nullable="true" unique="true" uniqueConstraintName="ux_apex_author__image_id" />
             </column>
             <column name="book_id" type="bigint">
                 <constraints nullable="true" />
@@ -63,7 +63,6 @@
             <column name="id" type="numeric"/>
             <column name="name" type="string"/>
             <column name="last_name" type="string"/>
-            <column name="image_url" type="string"/>
             <column name="created_by" type="string"/>
             <column name="created_date" type="date"/>
             <column name="last_modified_by" type="string"/>

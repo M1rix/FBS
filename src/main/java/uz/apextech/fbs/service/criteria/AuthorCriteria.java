@@ -33,8 +33,6 @@ public class AuthorCriteria implements Serializable, Criteria {
 
     private StringFilter lastName;
 
-    private StringFilter imageUrl;
-
     private StringFilter createdBy;
 
     private InstantFilter createdDate;
@@ -42,6 +40,8 @@ public class AuthorCriteria implements Serializable, Criteria {
     private StringFilter lastModifiedBy;
 
     private InstantFilter lastModifiedDate;
+
+    private LongFilter imageId;
 
     private LongFilter bookId;
 
@@ -53,11 +53,11 @@ public class AuthorCriteria implements Serializable, Criteria {
         this.id = other.id == null ? null : other.id.copy();
         this.name = other.name == null ? null : other.name.copy();
         this.lastName = other.lastName == null ? null : other.lastName.copy();
-        this.imageUrl = other.imageUrl == null ? null : other.imageUrl.copy();
         this.createdBy = other.createdBy == null ? null : other.createdBy.copy();
         this.createdDate = other.createdDate == null ? null : other.createdDate.copy();
         this.lastModifiedBy = other.lastModifiedBy == null ? null : other.lastModifiedBy.copy();
         this.lastModifiedDate = other.lastModifiedDate == null ? null : other.lastModifiedDate.copy();
+        this.imageId = other.imageId == null ? null : other.imageId.copy();
         this.bookId = other.bookId == null ? null : other.bookId.copy();
         this.distinct = other.distinct;
     }
@@ -110,21 +110,6 @@ public class AuthorCriteria implements Serializable, Criteria {
 
     public void setLastName(StringFilter lastName) {
         this.lastName = lastName;
-    }
-
-    public StringFilter getImageUrl() {
-        return imageUrl;
-    }
-
-    public StringFilter imageUrl() {
-        if (imageUrl == null) {
-            imageUrl = new StringFilter();
-        }
-        return imageUrl;
-    }
-
-    public void setImageUrl(StringFilter imageUrl) {
-        this.imageUrl = imageUrl;
     }
 
     public StringFilter getCreatedBy() {
@@ -187,6 +172,21 @@ public class AuthorCriteria implements Serializable, Criteria {
         this.lastModifiedDate = lastModifiedDate;
     }
 
+    public LongFilter getImageId() {
+        return imageId;
+    }
+
+    public LongFilter imageId() {
+        if (imageId == null) {
+            imageId = new LongFilter();
+        }
+        return imageId;
+    }
+
+    public void setImageId(LongFilter imageId) {
+        this.imageId = imageId;
+    }
+
     public LongFilter getBookId() {
         return bookId;
     }
@@ -223,11 +223,11 @@ public class AuthorCriteria implements Serializable, Criteria {
             Objects.equals(id, that.id) &&
             Objects.equals(name, that.name) &&
             Objects.equals(lastName, that.lastName) &&
-            Objects.equals(imageUrl, that.imageUrl) &&
             Objects.equals(createdBy, that.createdBy) &&
             Objects.equals(createdDate, that.createdDate) &&
             Objects.equals(lastModifiedBy, that.lastModifiedBy) &&
             Objects.equals(lastModifiedDate, that.lastModifiedDate) &&
+            Objects.equals(imageId, that.imageId) &&
             Objects.equals(bookId, that.bookId) &&
             Objects.equals(distinct, that.distinct)
         );
@@ -235,7 +235,7 @@ public class AuthorCriteria implements Serializable, Criteria {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, lastName, imageUrl, createdBy, createdDate, lastModifiedBy, lastModifiedDate, bookId, distinct);
+        return Objects.hash(id, name, lastName, createdBy, createdDate, lastModifiedBy, lastModifiedDate, imageId, bookId, distinct);
     }
 
     // prettier-ignore
@@ -245,11 +245,11 @@ public class AuthorCriteria implements Serializable, Criteria {
             (id != null ? "id=" + id + ", " : "") +
             (name != null ? "name=" + name + ", " : "") +
             (lastName != null ? "lastName=" + lastName + ", " : "") +
-            (imageUrl != null ? "imageUrl=" + imageUrl + ", " : "") +
             (createdBy != null ? "createdBy=" + createdBy + ", " : "") +
             (createdDate != null ? "createdDate=" + createdDate + ", " : "") +
             (lastModifiedBy != null ? "lastModifiedBy=" + lastModifiedBy + ", " : "") +
             (lastModifiedDate != null ? "lastModifiedDate=" + lastModifiedDate + ", " : "") +
+            (imageId != null ? "imageId=" + imageId + ", " : "") +
             (bookId != null ? "bookId=" + bookId + ", " : "") +
             (distinct != null ? "distinct=" + distinct + ", " : "") +
             "}";

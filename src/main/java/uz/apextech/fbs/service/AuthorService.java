@@ -76,6 +76,15 @@ public class AuthorService {
     }
 
     /**
+     * Get all the authors with eager load of many-to-many relationships.
+     *
+     * @return the list of entities.
+     */
+    public Page<AuthorDTO> findAllWithEagerRelationships(Pageable pageable) {
+        return authorRepository.findAllWithEagerRelationships(pageable).map(authorMapper::toDto);
+    }
+
+    /**
      * Get one author by id.
      *
      * @param id the id of the entity.
@@ -84,7 +93,7 @@ public class AuthorService {
     @Transactional(readOnly = true)
     public Optional<AuthorDTO> findOne(Long id) {
         log.debug("Request to get Author : {}", id);
-        return authorRepository.findById(id).map(authorMapper::toDto);
+        return authorRepository.findOneWithEagerRelationships(id).map(authorMapper::toDto);
     }
 
     /**

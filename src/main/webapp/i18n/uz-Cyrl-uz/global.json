@@ -12,6 +12,7 @@
         "exchange": "Exchange",
         "category": "Category",
         "author": "Author",
+        "image": "Image",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

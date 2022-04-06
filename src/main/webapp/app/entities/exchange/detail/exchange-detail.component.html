@@ -45,7 +45,7 @@
         <dt><span jhiTranslate="fbsApp.exchange.book">Book</span></dt>
         <dd>
           <div *ngIf="exchange.book">
-            <a [routerLink]="['/book', exchange.book?.id, 'view']">{{ exchange.book?.id }}</a>
+            <a [routerLink]="['/book', exchange.book?.id, 'view']">{{ exchange.book?.name }}</a>
           </div>
         </dd>
       </dl>

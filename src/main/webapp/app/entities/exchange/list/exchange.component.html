@@ -51,7 +51,7 @@
           <th scope="col" jhiSortBy="toProfile.id">
             <span jhiTranslate="fbsApp.exchange.toProfile">To Profile</span> <fa-icon icon="sort"></fa-icon>
           </th>
-          <th scope="col" jhiSortBy="book.id"><span jhiTranslate="fbsApp.exchange.book">Book</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="book.name"><span jhiTranslate="fbsApp.exchange.book">Book</span> <fa-icon icon="sort"></fa-icon></th>
           <th scope="col"></th>
         </tr>
       </thead>
@@ -76,7 +76,7 @@
           </td>
           <td>
             <div *ngIf="exchange.book">
-              <a [routerLink]="['/book', exchange.book?.id, 'view']">{{ exchange.book?.id }}</a>
+              <a [routerLink]="['/book', exchange.book?.id, 'view']">{{ exchange.book?.name }}</a>
             </div>
           </td>
           <td class="text-end">

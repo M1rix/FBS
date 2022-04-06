@@ -12,7 +12,7 @@ import uz.apextech.fbs.domain.enumeration.ProfileStatus;
  */
 @Entity
 @Table(name = "apex_profile")
-public class Profile implements Serializable {
+public class Profile extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -41,11 +41,6 @@ public class Profile implements Serializable {
     private String lastName;
 
     @NotNull
-    @Size(max = 255)
-    @Column(name = "image_url", length = 255, nullable = false)
-    private String imageUrl;
-
-    @NotNull
     @Size(min = 2, max = 6)
     @Column(name = "lang_key", length = 6, nullable = false)
     private String langKey;
@@ -68,20 +63,9 @@ public class Profile implements Serializable {
     @Column(name = "status", nullable = false)
     private ProfileStatus status;
 
-    @NotNull
-    @Size(max = 50)
-    @Column(name = "created_by", length = 50, nullable = false)
-    private String createdBy;
-
-    @Column(name = "created_date")
-    private Instant createdDate;
-
-    @Size(max = 50)
-    @Column(name = "last_modified_by", length = 50)
-    private String lastModifiedBy;
-
-    @Column(name = "last_modified_date")
-    private Instant lastModifiedDate;
+    @OneToOne
+    @JoinColumn(unique = true)
+    private Image image;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -150,19 +134,6 @@ public class Profile implements Serializable {
         this.lastName = lastName;
     }
 
-    public String getImageUrl() {
-        return this.imageUrl;
-    }
-
-    public Profile imageUrl(String imageUrl) {
-        this.setImageUrl(imageUrl);
-        return this;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
-
     public String getLangKey() {
         return this.langKey;
     }
@@ -228,56 +199,37 @@ public class Profile implements Serializable {
         this.status = status;
     }
 
-    public String getCreatedBy() {
-        return this.createdBy;
-    }
-
     public Profile createdBy(String createdBy) {
-        this.setCreatedBy(createdBy);
+        setCreatedBy(createdBy);
         return this;
-    }
-
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
-    }
-
-    public Instant getCreatedDate() {
-        return this.createdDate;
     }
 
     public Profile createdDate(Instant createdDate) {
-        this.setCreatedDate(createdDate);
+        setCreatedDate(createdDate);
         return this;
-    }
-
-    public void setCreatedDate(Instant createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    public String getLastModifiedBy() {
-        return this.lastModifiedBy;
     }
 
     public Profile lastModifiedBy(String lastModifiedBy) {
-        this.setLastModifiedBy(lastModifiedBy);
+        setLastModifiedBy(lastModifiedBy);
         return this;
-    }
-
-    public void setLastModifiedBy(String lastModifiedBy) {
-        this.lastModifiedBy = lastModifiedBy;
-    }
-
-    public Instant getLastModifiedDate() {
-        return this.lastModifiedDate;
     }
 
     public Profile lastModifiedDate(Instant lastModifiedDate) {
-        this.setLastModifiedDate(lastModifiedDate);
+        setLastModifiedDate(lastModifiedDate);
         return this;
     }
 
-    public void setLastModifiedDate(Instant lastModifiedDate) {
-        this.lastModifiedDate = lastModifiedDate;
+    public Image getImage() {
+        return this.image;
+    }
+
+    public void setImage(Image image) {
+        this.image = image;
+    }
+
+    public Profile image(Image image) {
+        this.setImage(image);
+        return this;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
@@ -308,7 +260,6 @@ public class Profile implements Serializable {
             ", accessToken='" + getAccessToken() + "'" +
             ", firstName='" + getFirstName() + "'" +
             ", lastName='" + getLastName() + "'" +
-            ", imageUrl='" + getImageUrl() + "'" +
             ", langKey='" + getLangKey() + "'" +
             ", gender='" + getGender() + "'" +
             ", score=" + getScore() +

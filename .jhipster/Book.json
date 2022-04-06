@@ -12,12 +12,6 @@
       "fieldValidateRulesMaxlength": "255"
     },
     {
-      "fieldName": "imageUrl",
-      "fieldType": "String",
-      "fieldValidateRules": ["required", "maxlength"],
-      "fieldValidateRulesMaxlength": "255"
-    },
-    {
       "fieldName": "pages",
       "fieldType": "Integer",
       "fieldValidateRules": ["min"],
@@ -64,17 +58,18 @@
   "readOnly": false,
   "relationships": [
     {
+      "otherEntityField": "url",
+      "otherEntityName": "image",
+      "otherEntityRelationshipName": "book",
+      "ownerSide": true,
+      "relationshipName": "image",
+      "relationshipType": "one-to-one"
+    },
+    {
       "otherEntityName": "category",
       "otherEntityRelationshipName": "book",
       "relationshipName": "category",
       "relationshipType": "many-to-one"
-    },
-    {
-      "otherEntityName": "exchange",
-      "otherEntityRelationshipName": "book",
-      "ownerSide": false,
-      "relationshipName": "exchange",
-      "relationshipType": "one-to-one"
     },
     {
       "otherEntityName": "author",

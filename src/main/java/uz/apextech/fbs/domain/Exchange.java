@@ -11,7 +11,7 @@ import javax.validation.constraints.*;
  */
 @Entity
 @Table(name = "apex_exchange")
-public class Exchange implements Serializable {
+public class Exchange extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -21,30 +21,17 @@ public class Exchange implements Serializable {
     @Column(name = "id")
     private Long id;
 
-    @NotNull
-    @Size(max = 50)
-    @Column(name = "created_by", length = 50, nullable = false)
-    private String createdBy;
-
-    @Column(name = "created_date")
-    private Instant createdDate;
-
-    @Size(max = 50)
-    @Column(name = "last_modified_by", length = 50)
-    private String lastModifiedBy;
-
-    @Column(name = "last_modified_date")
-    private Instant lastModifiedDate;
-
+    @JsonIgnoreProperties(value = { "image" }, allowSetters = true)
     @OneToOne
     @JoinColumn(unique = true)
     private Profile formProfile;
 
+    @JsonIgnoreProperties(value = { "image" }, allowSetters = true)
     @OneToOne
     @JoinColumn(unique = true)
     private Profile toProfile;
 
-    @JsonIgnoreProperties(value = { "category", "exchange", "authors" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "image", "category", "authors" }, allowSetters = true)
     @OneToOne
     @JoinColumn(unique = true)
     private Book book;
@@ -64,56 +51,24 @@ public class Exchange implements Serializable {
         this.id = id;
     }
 
-    public String getCreatedBy() {
-        return this.createdBy;
-    }
-
     public Exchange createdBy(String createdBy) {
-        this.setCreatedBy(createdBy);
+        setCreatedBy(createdBy);
         return this;
-    }
-
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
-    }
-
-    public Instant getCreatedDate() {
-        return this.createdDate;
     }
 
     public Exchange createdDate(Instant createdDate) {
-        this.setCreatedDate(createdDate);
+        setCreatedDate(createdDate);
         return this;
-    }
-
-    public void setCreatedDate(Instant createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    public String getLastModifiedBy() {
-        return this.lastModifiedBy;
     }
 
     public Exchange lastModifiedBy(String lastModifiedBy) {
-        this.setLastModifiedBy(lastModifiedBy);
+        setLastModifiedBy(lastModifiedBy);
         return this;
-    }
-
-    public void setLastModifiedBy(String lastModifiedBy) {
-        this.lastModifiedBy = lastModifiedBy;
-    }
-
-    public Instant getLastModifiedDate() {
-        return this.lastModifiedDate;
     }
 
     public Exchange lastModifiedDate(Instant lastModifiedDate) {
-        this.setLastModifiedDate(lastModifiedDate);
+        setLastModifiedDate(lastModifiedDate);
         return this;
-    }
-
-    public void setLastModifiedDate(Instant lastModifiedDate) {
-        this.lastModifiedDate = lastModifiedDate;
     }
 
     public Profile getFormProfile() {

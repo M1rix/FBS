@@ -22,10 +22,6 @@
         <dd>
           <span>{{ author.lastName }}</span>
         </dd>
-        <dt><span jhiTranslate="fbsApp.author.imageUrl">Image Url</span></dt>
-        <dd>
-          <span>{{ author.imageUrl }}</span>
-        </dd>
         <dt><span jhiTranslate="fbsApp.author.createdBy">Created By</span></dt>
         <dd>
           <span>{{ author.createdBy }}</span>
@@ -41,6 +37,12 @@
         <dt><span jhiTranslate="fbsApp.author.lastModifiedDate">Last Modified Date</span></dt>
         <dd>
           <span>{{ author.lastModifiedDate | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span jhiTranslate="fbsApp.author.image">Image</span></dt>
+        <dd>
+          <div *ngIf="author.image">
+            <a [routerLink]="['/image', author.image?.id, 'view']">{{ author.image?.url }}</a>
+          </div>
         </dd>
         <dt><span jhiTranslate="fbsApp.author.book">Book</span></dt>
         <dd>

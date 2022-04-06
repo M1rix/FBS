@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
+    <!--
+        Added the constraints for entity Profile.
+    -->
+    <changeSet id="20220328124719-2" author="jhipster">
+
+        <addForeignKeyConstraint baseColumnNames="image_id"
+                                 baseTableName="apex_profile"
+                                 constraintName="fk_apex_profile__image_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="apex_image"/>
+    </changeSet>
+</databaseChangeLog>

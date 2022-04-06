@@ -37,9 +37,6 @@
           <th scope="col" jhiSortBy="lastName">
             <span jhiTranslate="fbsApp.author.lastName">Last Name</span> <fa-icon icon="sort"></fa-icon>
           </th>
-          <th scope="col" jhiSortBy="imageUrl">
-            <span jhiTranslate="fbsApp.author.imageUrl">Image Url</span> <fa-icon icon="sort"></fa-icon>
-          </th>
           <th scope="col" jhiSortBy="createdBy">
             <span jhiTranslate="fbsApp.author.createdBy">Created By</span> <fa-icon icon="sort"></fa-icon>
           </th>
@@ -52,6 +49,7 @@
           <th scope="col" jhiSortBy="lastModifiedDate">
             <span jhiTranslate="fbsApp.author.lastModifiedDate">Last Modified Date</span> <fa-icon icon="sort"></fa-icon>
           </th>
+          <th scope="col" jhiSortBy="image.url"><span jhiTranslate="fbsApp.author.image">Image</span> <fa-icon icon="sort"></fa-icon></th>
           <th scope="col" jhiSortBy="book.id"><span jhiTranslate="fbsApp.author.book">Book</span> <fa-icon icon="sort"></fa-icon></th>
           <th scope="col"></th>
         </tr>
@@ -63,11 +61,15 @@
           </td>
           <td>{{ author.name }}</td>
           <td>{{ author.lastName }}</td>
-          <td>{{ author.imageUrl }}</td>
           <td>{{ author.createdBy }}</td>
           <td>{{ author.createdDate | formatMediumDatetime }}</td>
           <td>{{ author.lastModifiedBy }}</td>
           <td>{{ author.lastModifiedDate | formatMediumDatetime }}</td>
+          <td>
+            <div *ngIf="author.image">
+              <a [routerLink]="['/image', author.image?.id, 'view']">{{ author.image?.url }}</a>
+            </div>
+          </td>
           <td>
             <div *ngIf="author.book">
               <a [routerLink]="['/book', author.book?.id, 'view']">{{ author.book?.id }}</a>

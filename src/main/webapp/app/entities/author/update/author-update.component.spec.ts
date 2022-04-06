@@ -8,6 +8,8 @@ import { of, Subject, from } from 'rxjs';
 
 import { AuthorService } from '../service/author.service';
 import { IAuthor, Author } from '../author.model';
+import { IImage } from 'app/entities/image/image.model';
+import { ImageService } from 'app/entities/image/service/image.service';
 import { IBook } from 'app/entities/book/book.model';
 import { BookService } from 'app/entities/book/service/book.service';
 
@@ -18,6 +20,7 @@ describe('Author Management Update Component', () => {
   let fixture: ComponentFixture<AuthorUpdateComponent>;
   let activatedRoute: ActivatedRoute;
   let authorService: AuthorService;
+  let imageService: ImageService;
   let bookService: BookService;
 
   beforeEach(() => {
@@ -40,12 +43,31 @@ describe('Author Management Update Component', () => {
     fixture = TestBed.createComponent(AuthorUpdateComponent);
     activatedRoute = TestBed.inject(ActivatedRoute);
     authorService = TestBed.inject(AuthorService);
+    imageService = TestBed.inject(ImageService);
     bookService = TestBed.inject(BookService);
 
     comp = fixture.componentInstance;
   });
 
   describe('ngOnInit', () => {
+    it('Should call image query and add missing value', () => {
+      const author: IAuthor = { id: 456 };
+      const image: IImage = { id: 18250 };
+      author.image = image;
+
+      const imageCollection: IImage[] = [{ id: 81585 }];
+      jest.spyOn(imageService, 'query').mockReturnValue(of(new HttpResponse({ body: imageCollection })));
+      const expectedCollection: IImage[] = [image, ...imageCollection];
+      jest.spyOn(imageService, 'addImageToCollectionIfMissing').mockReturnValue(expectedCollection);
+
+      activatedRoute.data = of({ author });
+      comp.ngOnInit();
+
+      expect(imageService.query).toHaveBeenCalled();
+      expect(imageService.addImageToCollectionIfMissing).toHaveBeenCalledWith(imageCollection, image);
+      expect(comp.imagesCollection).toEqual(expectedCollection);
+    });
+
     it('Should call Book query and add missing value', () => {
       const author: IAuthor = { id: 456 };
       const book: IBook = { id: 34948 };
@@ -67,6 +89,8 @@ describe('Author Management Update Component', () => {
 
     it('Should update editForm', () => {
       const author: IAuthor = { id: 456 };
+      const image: IImage = { id: 19121 };
+      author.image = image;
       const book: IBook = { id: 17994 };
       author.book = book;
 
@@ -74,6 +98,7 @@ describe('Author Management Update Component', () => {
       comp.ngOnInit();
 
       expect(comp.editForm.value).toEqual(expect.objectContaining(author));
+      expect(comp.imagesCollection).toContain(image);
       expect(comp.booksSharedCollection).toContain(book);
     });
   });
@@ -143,6 +168,14 @@ describe('Author Management Update Component', () => {
   });
 
   describe('Tracking relationships identifiers', () => {
+    describe('trackImageById', () => {
+      it('Should return tracked Image primary key', () => {
+        const entity = { id: 123 };
+        const trackResult = comp.trackImageById(0, entity);
+        expect(trackResult).toEqual(entity.id);
+      });
+    });
+
     describe('trackBookById', () => {
       it('Should return tracked Book primary key', () => {
         const entity = { id: 123 };

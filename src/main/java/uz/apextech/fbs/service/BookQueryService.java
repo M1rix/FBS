@@ -93,9 +93,6 @@ public class BookQueryService extends QueryService<Book> {
             if (criteria.getName() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getName(), Book_.name));
             }
-            if (criteria.getImageUrl() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getImageUrl(), Book_.imageUrl));
-            }
             if (criteria.getPages() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getPages(), Book_.pages));
             }
@@ -117,16 +114,16 @@ public class BookQueryService extends QueryService<Book> {
             if (criteria.getLastModifiedDate() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getLastModifiedDate(), Book_.lastModifiedDate));
             }
+            if (criteria.getImageId() != null) {
+                specification =
+                    specification.and(
+                        buildSpecification(criteria.getImageId(), root -> root.join(Book_.image, JoinType.LEFT).get(Image_.id))
+                    );
+            }
             if (criteria.getCategoryId() != null) {
                 specification =
                     specification.and(
                         buildSpecification(criteria.getCategoryId(), root -> root.join(Book_.category, JoinType.LEFT).get(Category_.id))
-                    );
-            }
-            if (criteria.getExchangeId() != null) {
-                specification =
-                    specification.and(
-                        buildSpecification(criteria.getExchangeId(), root -> root.join(Book_.exchange, JoinType.LEFT).get(Exchange_.id))
                     );
             }
             if (criteria.getAuthorId() != null) {

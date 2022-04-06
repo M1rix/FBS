@@ -11,7 +11,7 @@ import javax.validation.constraints.*;
  */
 @Entity
 @Table(name = "apex_author")
-public class Author implements Serializable {
+public class Author extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -29,27 +29,12 @@ public class Author implements Serializable {
     @Column(name = "last_name", length = 50)
     private String lastName;
 
-    @Size(max = 255)
-    @Column(name = "image_url", length = 255)
-    private String imageUrl;
-
-    @NotNull
-    @Size(max = 50)
-    @Column(name = "created_by", length = 50, nullable = false)
-    private String createdBy;
-
-    @Column(name = "created_date")
-    private Instant createdDate;
-
-    @Size(max = 50)
-    @Column(name = "last_modified_by", length = 50)
-    private String lastModifiedBy;
-
-    @Column(name = "last_modified_date")
-    private Instant lastModifiedDate;
+    @OneToOne
+    @JoinColumn(unique = true)
+    private Image image;
 
     @ManyToOne
-    @JsonIgnoreProperties(value = { "category", "exchange", "authors" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "image", "category", "authors" }, allowSetters = true)
     private Book book;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
@@ -93,69 +78,37 @@ public class Author implements Serializable {
         this.lastName = lastName;
     }
 
-    public String getImageUrl() {
-        return this.imageUrl;
-    }
-
-    public Author imageUrl(String imageUrl) {
-        this.setImageUrl(imageUrl);
-        return this;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
-
-    public String getCreatedBy() {
-        return this.createdBy;
-    }
-
     public Author createdBy(String createdBy) {
-        this.setCreatedBy(createdBy);
+        setCreatedBy(createdBy);
         return this;
-    }
-
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
-    }
-
-    public Instant getCreatedDate() {
-        return this.createdDate;
     }
 
     public Author createdDate(Instant createdDate) {
-        this.setCreatedDate(createdDate);
+        setCreatedDate(createdDate);
         return this;
-    }
-
-    public void setCreatedDate(Instant createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    public String getLastModifiedBy() {
-        return this.lastModifiedBy;
     }
 
     public Author lastModifiedBy(String lastModifiedBy) {
-        this.setLastModifiedBy(lastModifiedBy);
+        setLastModifiedBy(lastModifiedBy);
         return this;
-    }
-
-    public void setLastModifiedBy(String lastModifiedBy) {
-        this.lastModifiedBy = lastModifiedBy;
-    }
-
-    public Instant getLastModifiedDate() {
-        return this.lastModifiedDate;
     }
 
     public Author lastModifiedDate(Instant lastModifiedDate) {
-        this.setLastModifiedDate(lastModifiedDate);
+        setLastModifiedDate(lastModifiedDate);
         return this;
     }
 
-    public void setLastModifiedDate(Instant lastModifiedDate) {
-        this.lastModifiedDate = lastModifiedDate;
+    public Image getImage() {
+        return this.image;
+    }
+
+    public void setImage(Image image) {
+        this.image = image;
+    }
+
+    public Author image(Image image) {
+        this.setImage(image);
+        return this;
     }
 
     public Book getBook() {
@@ -197,7 +150,6 @@ public class Author implements Serializable {
             "id=" + getId() +
             ", name='" + getName() + "'" +
             ", lastName='" + getLastName() + "'" +
-            ", imageUrl='" + getImageUrl() + "'" +
             ", createdBy='" + getCreatedBy() + "'" +
             ", createdDate='" + getCreatedDate() + "'" +
             ", lastModifiedBy='" + getLastModifiedBy() + "'" +

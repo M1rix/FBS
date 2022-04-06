@@ -29,28 +29,6 @@
         </div>
 
         <div class="row mb-3">
-          <label class="form-label" jhiTranslate="fbsApp.book.imageUrl" for="field_imageUrl">Image Url</label>
-          <input type="text" class="form-control" name="imageUrl" id="field_imageUrl" data-cy="imageUrl" formControlName="imageUrl" />
-          <div *ngIf="editForm.get('imageUrl')!.invalid && (editForm.get('imageUrl')!.dirty || editForm.get('imageUrl')!.touched)">
-            <small
-              class="form-text text-danger"
-              *ngIf="editForm.get('imageUrl')?.errors?.required"
-              jhiTranslate="entity.validation.required"
-            >
-              This field is required.
-            </small>
-            <small
-              class="form-text text-danger"
-              *ngIf="editForm.get('imageUrl')?.errors?.maxlength"
-              jhiTranslate="entity.validation.maxlength"
-              [translateValues]="{ max: 255 }"
-            >
-              This field cannot be longer than 255 characters.
-            </small>
-          </div>
-        </div>
-
-        <div class="row mb-3">
           <label class="form-label" jhiTranslate="fbsApp.book.pages" for="field_pages">Pages</label>
           <input type="number" class="form-control" name="pages" id="field_pages" data-cy="pages" formControlName="pages" />
           <div *ngIf="editForm.get('pages')!.invalid && (editForm.get('pages')!.dirty || editForm.get('pages')!.touched)">
@@ -193,6 +171,19 @@
               placeholder="YYYY-MM-DD HH:mm"
             />
           </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="fbsApp.book.image" for="field_image">Image</label>
+          <select class="form-control" id="field_image" data-cy="image" name="image" formControlName="image">
+            <option [ngValue]="null"></option>
+            <option
+              [ngValue]="imageOption.id === editForm.get('image')!.value?.id ? editForm.get('image')!.value : imageOption"
+              *ngFor="let imageOption of imagesCollection; trackBy: trackImageById"
+            >
+              {{ imageOption.url }}
+            </option>
+          </select>
         </div>
 
         <div class="row mb-3">

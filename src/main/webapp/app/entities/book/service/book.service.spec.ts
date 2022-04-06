@@ -27,7 +27,6 @@ describe('Book Service', () => {
     elemDefault = {
       id: 0,
       name: 'AAAAAAA',
-      imageUrl: 'AAAAAAA',
       pages: 0,
       status: BookStatus.AVAILABLE,
       likes: 0,
@@ -85,7 +84,6 @@ describe('Book Service', () => {
         {
           id: 1,
           name: 'BBBBBB',
-          imageUrl: 'BBBBBB',
           pages: 1,
           status: 'BBBBBB',
           likes: 1,
@@ -115,10 +113,9 @@ describe('Book Service', () => {
     it('should partial update a Book', () => {
       const patchObject = Object.assign(
         {
-          imageUrl: 'BBBBBB',
           pages: 1,
           status: 'BBBBBB',
-          lastModifiedDate: currentDate.format(DATE_TIME_FORMAT),
+          likes: 1,
         },
         new Book()
       );
@@ -145,7 +142,6 @@ describe('Book Service', () => {
         {
           id: 1,
           name: 'BBBBBB',
-          imageUrl: 'BBBBBB',
           pages: 1,
           status: 'BBBBBB',
           likes: 1,
@@ -210,7 +206,7 @@ describe('Book Service', () => {
       });
 
       it('should add only unique Book to an array', () => {
-        const bookArray: IBook[] = [{ id: 123 }, { id: 456 }, { id: 41459 }];
+        const bookArray: IBook[] = [{ id: 123 }, { id: 456 }, { id: 74056 }];
         const bookCollection: IBook[] = [{ id: 123 }];
         expectedResult = service.addBookToCollectionIfMissing(bookCollection, ...bookArray);
         expect(expectedResult).toHaveLength(3);

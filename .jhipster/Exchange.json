@@ -47,6 +47,7 @@
       "relationshipType": "one-to-one"
     },
     {
+      "otherEntityField": "name",
       "otherEntityName": "book",
       "otherEntityRelationshipName": "exchange",
       "ownerSide": true,
